@@ -6,21 +6,58 @@ import { RecommendationEngine } from '@/lib/recommendation-engine';
 import { shops } from '@/data/shops';
 import { MapPin, Clock, DollarSign, Star, Plus, ShoppingCart, Calendar, Heart } from 'lucide-react';
 
-interface ResultsPageProps {
-  userProfile: UserProfile;
-}
-
-export default function ResultsPage({ userProfile }: ResultsPageProps) {
+export default function ResultsPage() {
   const [selectedPath, setSelectedPath] = useState<'shop' | 'recipe' | 'subscription' | null>(null);
   const [recommendations, setRecommendations] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
+    // Try to get user profile from localStorage or create a default one
+    const savedProfile = localStorage.getItem('userProfile');
+    let profile: UserProfile;
+    
+    if (savedProfile) {
+      profile = JSON.parse(savedProfile);
+    } else {
+      // Create a default profile for demonstration
+      profile = {
+        id: 'demo-user',
+        name: 'Demo User',
+        gender: 'other',
+        age: 30,
+        location: {
+          city: 'Zurich',
+          coordinates: { lat: 47.3769, lng: 8.5417 }
+        },
+        allergies: [],
+        intolerances: [],
+        diet: 'none',
+        goals: ['energy-boost', 'longevity'],
+        dislikes: [],
+        sweetnessTolerance: 'medium',
+        texturePreference: 'layered',
+        budget: 'premium',
+        timeOfDay: 'morning',
+        activityLevel: 'moderate',
+        flavorPreferences: {
+          sweet: 6,
+          sour: 4,
+          bitter: 3,
+          umami: 5
+        },
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+    }
+    
+    setUserProfile(profile);
+    
     // Generate recommendations
-    const results = RecommendationEngine.generateRecommendations(userProfile, shops);
+    const results = RecommendationEngine.generateRecommendations(profile, shops);
     setRecommendations(results);
     setLoading(false);
-  }, [userProfile]);
+  }, []);
 
   if (loading) {
     return (

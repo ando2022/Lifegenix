@@ -221,7 +221,7 @@ export class RecommendationEngine {
       });
     });
 
-    return [...new Set(allergens)]; // Remove duplicates
+    return Array.from(new Set(allergens)); // Remove duplicates
   }
 
   /**
@@ -290,7 +290,7 @@ export class RecommendationEngine {
    * Calculate budget alignment
    */
   private static calculateBudgetAlignment(price: number, budget: string): number {
-    const budgetRanges = {
+    const budgetRanges: { [key: string]: { min: number; max: number } } = {
       'basic': { min: 8, max: 12 },
       'premium': { min: 10, max: 16 },
       'luxury': { min: 14, max: 25 }
@@ -402,7 +402,7 @@ export class RecommendationEngine {
     
     // Normalize to 0-10 scale
     Object.keys(totalImpact).forEach(key => {
-      totalImpact[key] = Math.min(Math.round(totalImpact[key]), 10);
+      (totalImpact as any)[key] = Math.min(Math.round((totalImpact as any)[key]), 10);
     });
     
     return totalImpact;
@@ -430,7 +430,7 @@ export class RecommendationEngine {
     smoothies.forEach(smoothie => {
       allergens.push(...this.extractSmoothieAllergens(smoothie.ingredients));
     });
-    return [...new Set(allergens)]; // Remove duplicates
+    return Array.from(new Set(allergens)); // Remove duplicates
   }
 
   /**

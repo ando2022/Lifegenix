@@ -152,7 +152,11 @@ export class RecipeGenerator {
     const goalFruits: { [key in HealthGoal]: string[] } = {
       'energy-boost': ['banana-frozen', 'mango-frozen'],
       'calm-stomach': ['banana-frozen', 'blueberries-frozen'],
-      'meal-replacement': ['banana-frozen', 'strawberries-frozen']
+      'meal-replacement': ['banana-frozen', 'strawberries-frozen'],
+      'longevity': ['blueberries-frozen', 'strawberries-frozen'],
+      'gut-health': ['banana-frozen', 'blueberries-frozen'],
+      'brain-health': ['blueberries-frozen', 'mango-frozen'],
+      'immune-support': ['strawberries-frozen', 'mango-frozen']
     };
 
     const preferredFruits = goalFruits[goal];
@@ -211,7 +215,11 @@ export class RecipeGenerator {
     const goalSuperfoods: { [key in HealthGoal]: string[] } = {
       'energy-boost': ['oats', 'cacao-powder'],
       'calm-stomach': ['chia-seeds', 'ginger-powder'],
-      'meal-replacement': ['chia-seeds', 'flax-seeds']
+      'meal-replacement': ['chia-seeds', 'flax-seeds'],
+      'longevity': ['turmeric-powder', 'spirulina'],
+      'gut-health': ['probiotic-powder', 'ginger-powder'],
+      'brain-health': ['cacao-powder', 'turmeric-powder'],
+      'immune-support': ['spirulina', 'ginger-powder']
     };
 
     const preferredSuperfoods = goalSuperfoods[goal];
@@ -244,7 +252,11 @@ export class RecipeGenerator {
     const goalEnhancers: { [key in HealthGoal]: string[] } = {
       'energy-boost': ['cacao-powder'],
       'calm-stomach': ['ginger-powder'],
-      'meal-replacement': ['cacao-powder']
+      'meal-replacement': ['cacao-powder'],
+      'longevity': ['cacao-powder'],
+      'gut-health': ['ginger-powder'],
+      'brain-health': ['cacao-powder'],
+      'immune-support': ['ginger-powder']
     };
 
     const preferredEnhancers = goalEnhancers[goal];
@@ -286,7 +298,11 @@ export class RecipeGenerator {
     const nameMap: { [key in HealthGoal]: string } = {
       'energy-boost': 'Energy Boost Smoothie',
       'calm-stomach': 'Calm Stomach Smoothie',
-      'meal-replacement': 'Meal Replacement Smoothie'
+      'meal-replacement': 'Meal Replacement Smoothie',
+      'longevity': 'Longevity Smoothie',
+      'gut-health': 'Gut Health Smoothie',
+      'brain-health': 'Brain Health Smoothie',
+      'immune-support': 'Immune Support Smoothie'
     };
     return nameMap[goal];
   }

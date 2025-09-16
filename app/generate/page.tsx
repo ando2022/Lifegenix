@@ -14,7 +14,7 @@ import ShopMatches from '@/components/ShopMatches';
 export default function GeneratePage() {
   const [currentStep, setCurrentStep] = useState<'onboarding' | 'mood' | 'recipe' | 'shops'>('onboarding');
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [selectedMood, setSelectedMood] = useState<Mood | null>(null);
+  const [selectedMood, setSelectedMood] = useState<Mood | undefined>(undefined);
   const [generatedRecipe, setGeneratedRecipe] = useState<GeneratedRecipe | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -58,7 +58,7 @@ export default function GeneratePage() {
   const resetFlow = () => {
     setCurrentStep('onboarding');
     setUserProfile(null);
-    setSelectedMood(null);
+    setSelectedMood(undefined);
     setGeneratedRecipe(null);
   };
 
