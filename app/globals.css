@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-50 text-teal-600 font-medium py-3 px-6 rounded-lg border border-teal-600 transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%);
+  }
+  
+  .smoothie-gradient {
+    background: linear-gradient(180deg, #8b5cf6 0%, #a855f7 50%, #c084fc 100%);
+  }
+  
+  .layer-gradient-1 {
+    background: linear-gradient(180deg, #7c3aed 0%, #8b5cf6 100%);
+  }
+  
+  .layer-gradient-2 {
+    background: linear-gradient(180deg, #a855f7 0%, #c084fc 100%);
+  }
+  
+  .layer-gradient-3 {
+    background: linear-gradient(180deg, #e0e7ff 0%, #f3e8ff 100%);
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-teal-600 to-mint-500 bg-clip-text text-transparent;
+  }
+  
+  .shadow-smoothie {
+    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.1), 0 10px 10px -5px rgba(139, 92, 246, 0.04);
+  }
+}
