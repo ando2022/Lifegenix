@@ -1,0 +1,75 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- DNA as Allegory: "The Recipe of Life" -->
+  <defs>
+    <linearGradient id="recipe1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14b8a6" />
+      <stop offset="100%" style="stop-color:#22c55e" />
+    </linearGradient>
+    <linearGradient id="recipe2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e" />
+      <stop offset="100%" style="stop-color:#14b8a6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Recipe strands (the formula for your perfect health) -->
+  <path d="M 25 25 Q 45 20, 65 30 Q 85 40, 105 35 Q 125 30, 145 40" 
+        stroke="url(#recipe1)" 
+        stroke-width="5" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <path d="M 25 55 Q 45 60, 65 50 Q 85 40, 105 45 Q 125 50, 145 40" 
+        stroke="url(#recipe2)" 
+        stroke-width="5" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <!-- Recipe ingredients (your unique nutritional code) -->
+  <!-- Vitamins -->
+  <circle cx="35" cy="30" r="3" fill="#f59e0b" opacity="0.9"/>
+  <text x="35" y="34" text-anchor="middle" font-family="Arial" font-size="6" fill="#ffffff" font-weight="bold">V</text>
+  
+  <!-- Minerals -->
+  <circle cx="55" cy="25" r="3" fill="#8b5cf6" opacity="0.9"/>
+  <text x="55" y="29" text-anchor="middle" font-family="Arial" font-size="6" fill="#ffffff" font-weight="bold">M</text>
+  
+  <!-- Proteins -->
+  <circle cx="75" cy="35" r="3" fill="#ef4444" opacity="0.9"/>
+  <text x="75" y="39" text-anchor="middle" font-family="Arial" font-size="6" fill="#ffffff" font-weight="bold">P</text>
+  
+  <!-- Fiber -->
+  <circle cx="95" cy="40" r="3" fill="#22c55e" opacity="0.9"/>
+  <text x="95" y="44" text-anchor="middle" font-family="Arial" font-size="6" fill="#ffffff" font-weight="bold">F</text>
+  
+  <!-- Antioxidants -->
+  <circle cx="115" cy="35" r="3" fill="#06b6d4" opacity="0.9"/>
+  <text x="115" y="39" text-anchor="middle" font-family="Arial" font-size="6" fill="#ffffff" font-weight="bold">A</text>
+  
+  <!-- Energy -->
+  <circle cx="135" cy="42" r="3" fill="#f59e0b" opacity="0.9"/>
+  <text x="135" y="46" text-anchor="middle" font-family="Arial" font-size="6" fill="#ffffff" font-weight="bold">E</text>
+  
+  <!-- Bottom strand ingredients -->
+  <circle cx="35" cy="50" r="3" fill="#14b8a6" opacity="0.9"/>
+  <circle cx="55" cy="55" r="3" fill="#22c55e" opacity="0.9"/>
+  <circle cx="75" cy="45" r="3" fill="#8b5cf6" opacity="0.9"/>
+  <circle cx="95" cy="40" r="3" fill="#ef4444" opacity="0.9"/>
+  <circle cx="115" cy="45" r="3" fill="#f59e0b" opacity="0.9"/>
+  <circle cx="135" cy="38" r="3" fill="#06b6d4" opacity="0.9"/>
+  
+  <!-- Connecting bonds (how ingredients work together) -->
+  <line x1="35" y1="33" x2="35" y2="47" stroke="#14b8a6" stroke-width="2" opacity="0.6"/>
+  <line x1="55" y1="28" x2="55" y2="52" stroke="#22c55e" stroke-width="2" opacity="0.6"/>
+  <line x1="75" y1="38" x2="75" y2="42" stroke="#8b5cf6" stroke-width="2" opacity="0.6"/>
+  <line x1="115" y1="38" x2="115" y2="42" stroke="#06b6d4" stroke-width="2" opacity="0.6"/>
+  <line x1="135" y1="35" x2="135" y2="45" stroke="#f59e0b" stroke-width="2" opacity="0.6"/>
+  
+  <!-- The perfect formula intersection -->
+  <circle cx="85" cy="40" r="8" fill="#ffffff" opacity="0.95"/>
+  <circle cx="85" cy="40" r="4" fill="#14b8a6"/>
+  <text x="85" y="44" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#ffffff">✓</text>
+  
+  <!-- Typography -->
+  <text x="165" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="500" fill="#1f2937">xova</text>
+  <text x="165" y="55" font-family="Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" letter-spacing="1px">LIFE'S RECIPE</text>
+</svg>

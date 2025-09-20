@@ -1,0 +1,30 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Minimal DNA: Just the X with subtle DNA hint -->
+  <defs>
+    <linearGradient id="pure" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14b8a6" />
+      <stop offset="100%" style="stop-color:#22c55e" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Clean X with rounded ends -->
+  <path d="M 45 25 L 75 55" 
+        stroke="url(#pure)" 
+        stroke-width="8" 
+        stroke-linecap="round"/>
+  
+  <path d="M 75 25 L 45 55" 
+        stroke="url(#pure)" 
+        stroke-width="8" 
+        stroke-linecap="round"/>
+  
+  <!-- Subtle DNA connection points -->
+  <circle cx="60" cy="30" r="2" fill="#22c55e" opacity="0.6"/>
+  <circle cx="60" cy="50" r="2" fill="#14b8a6" opacity="0.6"/>
+  
+  <!-- Central point -->
+  <circle cx="60" cy="40" r="3" fill="#ffffff"/>
+  
+  <!-- Typography -->
+  <text x="90" y="50" font-family="Arial, sans-serif" font-size="36" font-weight="300" fill="#1f2937">ova</text>
+</svg>

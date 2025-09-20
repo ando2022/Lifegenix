@@ -1,0 +1,63 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Clean DNA: "Longevity Code" with XOVA integration -->
+  <defs>
+    <linearGradient id="longevity1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14b8a6" />
+      <stop offset="100%" style="stop-color:#22c55e" />
+    </linearGradient>
+    <linearGradient id="longevity2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e" />
+      <stop offset="100%" style="stop-color:#14b8a6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Clean DNA helixes -->
+  <path d="M 30 30 Q 50 25, 70 35 Q 90 45, 110 40" 
+        stroke="url(#longevity1)" 
+        stroke-width="4" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <path d="M 30 50 Q 50 55, 70 45 Q 90 35, 110 40" 
+        stroke="url(#longevity2)" 
+        stroke-width="4" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <!-- XOVA letters as DNA base pairs -->
+  <!-- X pair -->
+  <circle cx="40" cy="35" r="6" fill="#ffffff" stroke="#14b8a6" stroke-width="2"/>
+  <text x="40" y="39" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#14b8a6">X</text>
+  <circle cx="40" cy="45" r="6" fill="#ffffff" stroke="#22c55e" stroke-width="2"/>
+  <text x="40" y="49" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#22c55e">X</text>
+  <line x1="40" y1="41" x2="40" y2="39" stroke="#14b8a6" stroke-width="2"/>
+  
+  <!-- O pair -->
+  <circle cx="60" cy="30" r="6" fill="#ffffff" stroke="#22c55e" stroke-width="2"/>
+  <text x="60" y="34" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#22c55e">O</text>
+  <circle cx="60" cy="50" r="6" fill="#ffffff" stroke="#14b8a6" stroke-width="2"/>
+  <text x="60" y="54" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#14b8a6">O</text>
+  <line x1="60" y1="36" x2="60" y2="44" stroke="#14b8a6" stroke-width="2"/>
+  
+  <!-- V pair -->
+  <circle cx="80" cy="40" r="6" fill="#ffffff" stroke="#14b8a6" stroke-width="2"/>
+  <text x="80" y="44" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#14b8a6">V</text>
+  <circle cx="80" cy="40" r="6" fill="#ffffff" stroke="#22c55e" stroke-width="2"/>
+  <text x="80" y="44" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#22c55e">V</text>
+  
+  <!-- A pair -->
+  <circle cx="100" cy="35" r="6" fill="#ffffff" stroke="#22c55e" stroke-width="2"/>
+  <text x="100" y="39" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#22c55e">A</text>
+  <circle cx="100" cy="45" r="6" fill="#ffffff" stroke="#14b8a6" stroke-width="2"/>
+  <text x="100" y="49" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#14b8a6">A</text>
+  <line x1="100" y1="41" x2="100" y2="39" stroke="#22c55e" stroke-width="2"/>
+  
+  <!-- Central longevity symbol -->
+  <circle cx="70" cy="40" r="10" fill="none" stroke="#14b8a6" stroke-width="2" opacity="0.3"/>
+  <circle cx="70" cy="40" r="3" fill="#14b8a6"/>
+  <text x="70" y="44" text-anchor="middle" font-family="Arial" font-size="6" font-weight="bold" fill="#ffffff">∞</text>
+  
+  <!-- Typography -->
+  <text x="140" y="45" font-family="Arial, sans-serif" font-size="26" font-weight="500" fill="#1f2937">xova</text>
+  <text x="140" y="60" font-family="Arial, sans-serif" font-size="8" font-weight="400" fill="#6b7280" letter-spacing="1px">LONGEVITY CODE</text>
+</svg>

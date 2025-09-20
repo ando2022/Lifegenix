@@ -46,36 +46,33 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
             <div className="relative w-8 h-8">
-              {/* DNA Helix X pattern */}
+              {/* Molecular X Symbol */}
               <svg width="32" height="32" viewBox="0 0 32 32" className="absolute inset-0">
                 <defs>
-                  <linearGradient id="helix1" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#14b8a6" />
-                    <stop offset="100%" stopColor="#22c55e" />
-                  </linearGradient>
-                  <linearGradient id="helix2" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#22c55e" />
-                    <stop offset="100%" stopColor="#14b8a6" />
-                  </linearGradient>
+                  <radialGradient id="headerAtom1" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="70%" stopColor="#14b8a6" />
+                    <stop offset="100%" stopColor="#0d9488" />
+                  </radialGradient>
+                  <radialGradient id="headerAtom2" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="70%" stopColor="#22c55e" />
+                    <stop offset="100%" stopColor="#16a34a" />
+                  </radialGradient>
                 </defs>
-                {/* Left helix curve */}
-                <path d="M 6 6 Q 12 10, 16 16 Q 20 22, 26 26" 
-                      stroke="url(#helix1)" 
-                      strokeWidth="2.5" 
-                      fill="none" 
-                      strokeLinecap="round"/>
-                {/* Right helix curve */}
-                <path d="M 26 6 Q 20 10, 16 16 Q 12 22, 6 26" 
-                      stroke="url(#helix2)" 
-                      strokeWidth="2.5" 
-                      fill="none" 
-                      strokeLinecap="round"/>
-                {/* Nutrient nodes */}
-                <circle cx="9" cy="9" r="1.5" fill="#14b8a6" opacity="0.8"/>
-                <circle cx="16" cy="16" r="2" fill="#ffffff" opacity="0.9"/>
-                <circle cx="23" cy="23" r="1.5" fill="#22c55e" opacity="0.8"/>
-                <circle cx="23" cy="9" r="1.5" fill="#22c55e" opacity="0.8"/>
-                <circle cx="9" cy="23" r="1.5" fill="#14b8a6" opacity="0.8"/>
+                
+                {/* Molecular bonds forming X */}
+                <line x1="8" y1="8" x2="24" y2="24" stroke="#14b8a6" strokeWidth="2" opacity="0.8"/>
+                <line x1="24" y1="8" x2="8" y2="24" stroke="#22c55e" strokeWidth="2" opacity="0.8"/>
+                
+                {/* Corner atoms */}
+                <circle cx="8" cy="8" r="4" fill="url(#headerAtom1)"/>
+                <circle cx="24" cy="8" r="4" fill="url(#headerAtom2)"/>
+                <circle cx="8" cy="24" r="4" fill="url(#headerAtom2)"/>
+                <circle cx="24" cy="24" r="4" fill="url(#headerAtom1)"/>
+                
+                {/* Central atom */}
+                <circle cx="16" cy="16" r="5" fill="url(#headerAtom1)"/>
               </svg>
             </div>
             <span className="text-xl font-bold text-gradient">Xova</span>

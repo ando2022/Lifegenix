@@ -1,0 +1,53 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- DNA as Allegory: "Evolution of Wellness" -->
+  <defs>
+    <linearGradient id="evolution1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#14b8a6" />
+      <stop offset="33%" style="stop-color:#22c55e" />
+      <stop offset="66%" style="stop-color:#f59e0b" />
+      <stop offset="100%" style="stop-color:#14b8a6" />
+    </linearGradient>
+    <linearGradient id="evolution2" x1="100%" y1="0%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#22c55e" />
+      <stop offset="33%" style="stop-color:#14b8a6" />
+      <stop offset="66%" style="stop-color:#8b5cf6" />
+      <stop offset="100%" style="stop-color:#22c55e" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Evolutionary spiral (DNA as evolution of personal health) -->
+  <path d="M 30 45 Q 50 25, 70 35 Q 90 45, 110 35 Q 130 25, 150 45" 
+        stroke="url(#evolution1)" 
+        stroke-width="5" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <path d="M 30 35 Q 50 55, 70 45 Q 90 35, 110 45 Q 130 55, 150 35" 
+        stroke="url(#evolution2)" 
+        stroke-width="5" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <!-- Evolution stages (your wellness journey) -->
+  <circle cx="40" cy="40" r="5" fill="#ef4444" opacity="0.8"/> <!-- Current state -->
+  <circle cx="70" cy="40" r="6" fill="#f59e0b" opacity="0.9"/> <!-- Improvement -->
+  <circle cx="100" cy="40" r="7" fill="#22c55e" opacity="0.9"/> <!-- Optimization -->
+  <circle cx="130" cy="40" r="8" fill="#14b8a6" opacity="1"/> <!-- Peak wellness -->
+  
+  <!-- Connection lines (showing progression) -->
+  <line x1="45" y1="40" x2="65" y2="40" stroke="#14b8a6" stroke-width="2" opacity="0.5"/>
+  <line x1="76" y1="40" x2="94" y2="40" stroke="#22c55e" stroke-width="2" opacity="0.5"/>
+  <line x1="107" y1="40" x2="122" y2="40" stroke="#14b8a6" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Central X (intersection of past and future wellness) -->
+  <path d="M 85 25 L 95 55" stroke="#14b8a6" stroke-width="4" stroke-linecap="round"/>
+  <path d="M 95 25 L 85 55" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Peak point -->
+  <circle cx="90" cy="40" r="6" fill="#ffffff"/>
+  <circle cx="90" cy="40" r="3" fill="#14b8a6"/>
+  
+  <!-- Typography -->
+  <text x="170" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="500" fill="#1f2937">xova</text>
+  <text x="170" y="55" font-family="Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" letter-spacing="1px">WELLNESS EVOLUTION</text>
+</svg>

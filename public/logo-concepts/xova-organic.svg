@@ -1,0 +1,51 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Organic/Natural Elements Concept -->
+  <defs>
+    <linearGradient id="leaf1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e" />
+      <stop offset="100%" style="stop-color:#16a34a" />
+    </linearGradient>
+    <linearGradient id="leaf2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#14b8a6" />
+      <stop offset="100%" style="stop-color:#0d9488" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Leaf/branch forming X - left branch -->
+  <path d="M 25 25 Q 45 35, 65 45 Q 75 50, 85 55" 
+        stroke="url(#leaf1)" 
+        stroke-width="6" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <!-- Leaf shapes along left branch -->
+  <ellipse cx="35" cy="30" rx="8" ry="4" fill="#22c55e" opacity="0.8" transform="rotate(30 35 30)"/>
+  <ellipse cx="55" cy="40" rx="6" ry="3" fill="#16a34a" opacity="0.7" transform="rotate(35 55 40)"/>
+  <ellipse cx="75" cy="50" rx="7" ry="3.5" fill="#22c55e" opacity="0.8" transform="rotate(40 75 50)"/>
+  
+  <!-- Right branch -->
+  <path d="M 95 25 Q 75 35, 55 45 Q 45 50, 35 55" 
+        stroke="url(#leaf2)" 
+        stroke-width="6" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <!-- Leaf shapes along right branch -->
+  <ellipse cx="85" cy="30" rx="8" ry="4" fill="#14b8a6" opacity="0.8" transform="rotate(-30 85 30)"/>
+  <ellipse cx="65" cy="40" rx="6" ry="3" fill="#0d9488" opacity="0.7" transform="rotate(-35 65 40)"/>
+  <ellipse cx="45" cy="50" rx="7" ry="3.5" fill="#14b8a6" opacity="0.8" transform="rotate(-40 45 50)"/>
+  
+  <!-- Central flower/fruit -->
+  <circle cx="60" cy="40" r="8" fill="#f59e0b" opacity="0.9"/>
+  <circle cx="60" cy="40" r="4" fill="#ffffff" opacity="0.8"/>
+  
+  <!-- Small berries/fruits -->
+  <circle cx="30" cy="35" r="2" fill="#ef4444" opacity="0.8"/>
+  <circle cx="90" cy="35" r="2" fill="#8b5cf6" opacity="0.8"/>
+  <circle cx="50" cy="25" r="1.5" fill="#f59e0b" opacity="0.7"/>
+  <circle cx="70" cy="25" r="1.5" fill="#ef4444" opacity="0.7"/>
+  
+  <!-- Typography -->
+  <text x="140" y="45" font-family="Arial, sans-serif" font-size="26" font-weight="400" fill="#1f2937">xova</text>
+  <text x="140" y="65" font-family="Arial, sans-serif" font-size="8" font-weight="400" fill="#6b7280" letter-spacing="1px">NATURAL FUSION</text>
+</svg>

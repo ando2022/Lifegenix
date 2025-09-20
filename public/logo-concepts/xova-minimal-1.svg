@@ -1,0 +1,33 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ultra Minimal DNA: Just two elegant curves -->
+  <defs>
+    <linearGradient id="minimal1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14b8a6" />
+      <stop offset="100%" style="stop-color:#22c55e" />
+    </linearGradient>
+    <linearGradient id="minimal2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e" />
+      <stop offset="100%" style="stop-color:#14b8a6" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Simple crossing curves -->
+  <path d="M 40 25 Q 60 35, 80 45" 
+        stroke="url(#minimal1)" 
+        stroke-width="4" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <path d="M 80 25 Q 60 35, 40 45" 
+        stroke="url(#minimal2)" 
+        stroke-width="4" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <!-- Single intersection point -->
+  <circle cx="60" cy="35" r="3" fill="#ffffff"/>
+  <circle cx="60" cy="35" r="1.5" fill="#14b8a6"/>
+  
+  <!-- Typography -->
+  <text x="100" y="45" font-family="Arial, sans-serif" font-size="32" font-weight="300" fill="#1f2937">xova</text>
+</svg>

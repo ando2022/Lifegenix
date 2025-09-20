@@ -1,0 +1,54 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- DNA as Allegory: "Building Blocks of Perfect Health" -->
+  <defs>
+    <linearGradient id="health1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14b8a6" />
+      <stop offset="50%" style="stop-color:#22c55e" />
+      <stop offset="100%" style="stop-color:#14b8a6" />
+    </linearGradient>
+    <linearGradient id="health2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e" />
+      <stop offset="50%" style="stop-color:#14b8a6" />
+      <stop offset="100%" style="stop-color:#22c55e" />
+    </linearGradient>
+  </defs>
+  
+  <!-- DNA-inspired flowing ribbons (representing life's building blocks) -->
+  <path d="M 25 20 Q 45 15, 65 25 Q 85 35, 105 30 Q 125 25, 145 35" 
+        stroke="url(#health1)" 
+        stroke-width="6" 
+        fill="none" 
+        stroke-linecap="round"
+        opacity="0.9"/>
+  
+  <path d="M 25 50 Q 45 55, 65 45 Q 85 35, 105 40 Q 125 45, 145 35" 
+        stroke="url(#health2)" 
+        stroke-width="6" 
+        fill="none" 
+        stroke-linecap="round"
+        opacity="0.9"/>
+  
+  <!-- Connection points (representing personalized nutrition codes) -->
+  <line x1="45" y1="18" x2="45" y2="52" stroke="#14b8a6" stroke-width="2" opacity="0.7"/>
+  <line x1="85" y1="35" x2="85" y2="35" stroke="#22c55e" stroke-width="4" opacity="0.8"/>
+  <line x1="125" y1="28" x2="125" y2="42" stroke="#14b8a6" stroke-width="2" opacity="0.7"/>
+  
+  <!-- Health building blocks (nutrients as DNA base pairs) -->
+  <rect x="42" y="16" width="6" height="4" rx="2" fill="#f59e0b" opacity="0.9"/> <!-- Vitamin C -->
+  <rect x="42" y="50" width="6" height="4" rx="2" fill="#ef4444" opacity="0.9"/> <!-- Antioxidants -->
+  
+  <rect x="82" y="33" width="6" height="4" rx="2" fill="#22c55e" opacity="0.9"/> <!-- Minerals -->
+  <rect x="82" y="37" width="6" height="4" rx="2" fill="#8b5cf6" opacity="0.9"/> <!-- Proteins -->
+  
+  <rect x="122" y="26" width="6" height="4" rx="2" fill="#06b6d4" opacity="0.9"/> <!-- Fiber -->
+  <rect x="122" y="40" width="6" height="4" rx="2" fill="#f59e0b" opacity="0.9"/> <!-- Energy -->
+  
+  <!-- Central fusion point (where your unique code creates perfect health) -->
+  <circle cx="85" cy="35" r="8" fill="#ffffff" opacity="0.95"/>
+  <circle cx="85" cy="35" r="4" fill="#14b8a6" opacity="1"/>
+  <text x="85" y="39" text-anchor="middle" font-family="Arial" font-size="8" font-weight="bold" fill="#ffffff">X</text>
+  
+  <!-- Typography -->
+  <text x="170" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="500" fill="#1f2937">xova</text>
+  <text x="170" y="55" font-family="Arial, sans-serif" font-size="7" font-weight="400" fill="#6b7280" letter-spacing="1px">YOUR HEALTH CODE</text>
+</svg>
