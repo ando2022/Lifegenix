@@ -10,9 +10,39 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-mint-500 rounded-lg flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
+            <Link href="/" className="flex items-center space-x-3 mb-4">
+              <div className="relative w-8 h-8">
+                {/* DNA Helix X pattern */}
+                <svg width="32" height="32" viewBox="0 0 32 32" className="absolute inset-0">
+                  <defs>
+                    <linearGradient id="footerHelix1" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#14b8a6" />
+                      <stop offset="100%" stopColor="#22c55e" />
+                    </linearGradient>
+                    <linearGradient id="footerHelix2" x1="100%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stopColor="#22c55e" />
+                      <stop offset="100%" stopColor="#14b8a6" />
+                    </linearGradient>
+                  </defs>
+                  {/* Left helix curve */}
+                  <path d="M 6 6 Q 12 10, 16 16 Q 20 22, 26 26" 
+                        stroke="url(#footerHelix1)" 
+                        strokeWidth="2.5" 
+                        fill="none" 
+                        strokeLinecap="round"/>
+                  {/* Right helix curve */}
+                  <path d="M 26 6 Q 20 10, 16 16 Q 12 22, 6 26" 
+                        stroke="url(#footerHelix2)" 
+                        strokeWidth="2.5" 
+                        fill="none" 
+                        strokeLinecap="round"/>
+                  {/* Nutrient nodes */}
+                  <circle cx="9" cy="9" r="1.5" fill="#14b8a6" opacity="0.8"/>
+                  <circle cx="16" cy="16" r="2" fill="#ffffff" opacity="0.9"/>
+                  <circle cx="23" cy="23" r="1.5" fill="#22c55e" opacity="0.8"/>
+                  <circle cx="23" cy="9" r="1.5" fill="#22c55e" opacity="0.8"/>
+                  <circle cx="9" cy="23" r="1.5" fill="#14b8a6" opacity="0.8"/>
+                </svg>
               </div>
               <span className="text-xl font-bold">Xova</span>
             </Link>
