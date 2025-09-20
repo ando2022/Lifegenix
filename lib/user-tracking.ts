@@ -268,8 +268,8 @@ export class UserTracker {
 
   private async sendToAnalytics(event: UserEvent) {
     // Google Analytics 4
-    if (typeof gtag !== 'undefined') {
-      gtag('event', event.eventName, {
+    if (typeof (window as any).gtag !== 'undefined') {
+      (window as any).gtag('event', event.eventName, {
         event_category: event.eventType,
         event_label: event.page,
         user_id: event.userId,
@@ -279,8 +279,8 @@ export class UserTracker {
     }
 
     // Mixpanel (if you want to add it)
-    if (typeof mixpanel !== 'undefined') {
-      mixpanel.track(event.eventName, {
+    if (typeof (window as any).mixpanel !== 'undefined') {
+      (window as any).mixpanel.track(event.eventName, {
         ...event.properties,
         $user_id: event.userId,
         $session_id: event.sessionId,

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { UserProfile, Mood, GeneratedRecipe } from '@/lib/types';
 import { useAnalytics, useEngagementTracking } from '@/hooks/useAnalytics';
 import { SingleMixRecipeGenerator } from '@/lib/single-mix-recipe-generator';
@@ -11,6 +12,9 @@ import OnboardingForm from '@/components/OnboardingForm';
 import MoodSelector from '@/components/MoodSelector';
 import SingleMixRecipeDisplay from '@/components/SingleMixRecipeDisplay';
 import ShopMatches from '@/components/ShopMatches';
+import { createClient } from '@/lib/supabase/client';
+import { Button } from '@/components/ui/button';
+import { Save, ChefHat } from 'lucide-react';
 
 export default function GeneratePage() {
   const [currentStep, setCurrentStep] = useState<'onboarding' | 'mood' | 'recipe' | 'shops'>('onboarding');
@@ -18,6 +22,11 @@ export default function GeneratePage() {
   const [selectedMood, setSelectedMood] = useState<Mood | undefined>(undefined);
   const [generatedRecipe, setGeneratedRecipe] = useState<GeneratedRecipe | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const router = useRouter();
+  const supabase = createClient();
 
   const recipeGenerator = new SingleMixRecipeGenerator();
   const shopMatcher = new ShopMatcher();
@@ -25,6 +34,31 @@ export default function GeneratePage() {
   
   // Track user engagement on this page
   useEngagementTracking();
+  
+  // Check authentication status
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      
+      // Redirect to sign in if not authenticated
+      if (!user) {
+        router.push('/auth/signin?redirect=/generate');
+      }
+    };
+    
+    checkUser();
+    
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+      if (!session?.user) {
+        router.push('/auth/signin?redirect=/generate');
+      }
+    });
+    
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleOnboardingComplete = (profile: UserProfile) => {
     setUserProfile(profile);
@@ -38,7 +72,7 @@ export default function GeneratePage() {
       setIsGenerating(true);
       
       // Simulate API call delay
-      setTimeout(() => {
+      setTimeout(async () => {
         const goal = mood.recommendedGoals[0] || 'energy-boost';
         const recipe = recipeGenerator.generateRecipe(userProfile, mood, goal);
         const shopMatches = shopMatcher.findMatches(recipe.recipe);
@@ -55,6 +89,11 @@ export default function GeneratePage() {
           await trackRecipeGeneration(userProfile, mood, finalRecipe.singleMixRecipe);
         }
         
+        // Auto-save smoothie for authenticated users
+        if (user) {
+          await saveSmoothie(finalRecipe, mood);
+        }
+        
         setIsGenerating(false);
         setCurrentStep('recipe');
       }, 2000);
@@ -67,11 +106,41 @@ export default function GeneratePage() {
     // In a real app, this would redirect to order confirmation or payment
   };
 
+  const saveSmoothie = async (recipe: GeneratedRecipe, mood: Mood) => {
+    if (!user || isSaved) return;
+    
+    setIsSaving(true);
+    try {
+      const response = await fetch('/api/smoothies', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: `${mood.name} Smoothie - ${new Date().toLocaleDateString()}`,
+          recipe: recipe.singleMixRecipe || recipe.recipe,
+          mood,
+          userProfile,
+          goals: userProfile?.goals || [],
+          totalNutrition: recipe.singleMixRecipe?.totalNutrition || recipe.recipe.totalNutrition,
+          cost: recipe.price
+        })
+      });
+      
+      if (response.ok) {
+        setIsSaved(true);
+      }
+    } catch (error) {
+      console.error('Error saving smoothie:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+  
   const resetFlow = () => {
     setCurrentStep('onboarding');
     setUserProfile(null);
     setSelectedMood(undefined);
     setGeneratedRecipe(null);
+    setIsSaved(false);
   };
 
   return (
@@ -153,6 +222,31 @@ export default function GeneratePage() {
 
         {currentStep === 'recipe' && generatedRecipe && (
           <div className="max-w-4xl mx-auto">
+            {/* Save notification for authenticated users */}
+            {user && isSaved && (
+              <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                      <Save className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-green-800 font-medium">Smoothie saved to your dashboard!</p>
+                      <p className="text-green-600 text-sm">You can view it anytime in your collection</p>
+                    </div>
+                  </div>
+                  <Button 
+                    variant="outline"
+                    size="sm"
+                    onClick={() => router.push('/dashboard')}
+                    className="border-green-600 text-green-600 hover:bg-green-50"
+                  >
+                    View in Dashboard
+                  </Button>
+                </div>
+              </div>
+            )}
+            
             {generatedRecipe.singleMixRecipe ? (
               <SingleMixRecipeDisplay recipe={generatedRecipe.singleMixRecipe} />
             ) : (

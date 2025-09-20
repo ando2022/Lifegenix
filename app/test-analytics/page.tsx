@@ -37,13 +37,13 @@ export default function TestAnalyticsPage() {
       cost: 12.50
     };
     
-    const mockProfile = {
+    const mockProfile: any = {
       id: 'test-user',
       allergies: ['nuts'],
       diet: 'vegan'
     };
 
-    const mockMood = {
+    const mockMood: any = {
       id: 'energetic',
       name: 'Energetic'
     };

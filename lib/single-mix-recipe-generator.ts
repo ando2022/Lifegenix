@@ -204,7 +204,7 @@ export class SingleMixRecipeGenerator {
 
   private selectProtein(goal: HealthGoal, userProfile: UserProfile): Ingredient | null {
     const availableProteins = this.ingredients.filter(ing => 
-      (ing.category === 'yogurts' || ing.category === 'proteins') && 
+      ing.category === 'yogurts' && 
       !this.hasAllergen(ing, userProfile.allergies)
     );
 
