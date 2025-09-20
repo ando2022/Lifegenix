@@ -118,7 +118,7 @@ export default function CafesPage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Prepare & Serve</h3>
                 <p className="text-gray-600">
                   Follow our standardized preparation methods to create beautiful, 
-                  layered smoothies that exceed customer expectations every time.
+                  single-mix smoothies that exceed customer expectations every time.
                 </p>
               </div>
             </div>
@@ -133,7 +133,7 @@ export default function CafesPage() {
                 Essentials Booster Kit
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Everything you need to create professional layered smoothies
+                Everything you need to create professional single-mix smoothies
               </p>
             </div>
 
@@ -184,7 +184,7 @@ export default function CafesPage() {
                         </li>
                         <li className="flex items-center space-x-3">
                           <CheckCircle className="w-5 h-5 text-green-500" />
-                          <span className="text-gray-700">Layering technique guide</span>
+                          <span className="text-gray-700">Single-mix technique guide</span>
                         </li>
                         <li className="flex items-center space-x-3">
                           <CheckCircle className="w-5 h-5 text-green-500" />
@@ -343,7 +343,7 @@ export default function CafesPage() {
                 </div>
                 <p className="text-gray-600 mb-4">
                   "The Essentials Kit made it so easy to get started. Our staff learned the techniques 
-                  quickly and customers are amazed by the beautiful layered smoothies."
+                  quickly and customers are amazed by the perfectly blended smoothies."
                 </p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center mr-3">

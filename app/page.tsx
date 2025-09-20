@@ -153,7 +153,7 @@ export default function HomePage() {
                   <div className="flex items-center space-x-4 text-sm text-gray-600">
                     <span>⚡ Energy Goal</span>
                     <span>⏱️ 5 min prep</span>
-                    <span>💰 CHF 8.50</span>
+                    <span>🌱 Plant-based</span>
                   </div>
                 </div>
 
@@ -161,38 +161,78 @@ export default function HomePage() {
                   {/* Ingredients */}
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-4">Exact Ingredients</h4>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Frozen banana</span>
-                        <span className="font-medium text-gray-900">120g (1 medium)</span>
+                    <div className="space-y-3">
+                      <div className="border-l-4 border-yellow-400 pl-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="text-gray-900 font-medium">Frozen banana</span>
+                            <p className="text-xs text-gray-500">Potassium for muscle function, natural energy</p>
+                          </div>
+                          <span className="font-medium text-gray-900">120g (1 medium)</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Frozen mango</span>
-                        <span className="font-medium text-gray-900">80g (½ cup)</span>
+                      <div className="border-l-4 border-orange-400 pl-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="text-gray-900 font-medium">Frozen mango</span>
+                            <p className="text-xs text-gray-500">Vitamin C, beta-carotene for immunity</p>
+                          </div>
+                          <span className="font-medium text-gray-900">80g (½ cup)</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Coconut yogurt</span>
-                        <span className="font-medium text-gray-900">100ml (⅓ cup)</span>
+                      <div className="border-l-4 border-blue-400 pl-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="text-gray-900 font-medium">Coconut yogurt</span>
+                            <p className="text-xs text-gray-500">Probiotics for gut health, healthy fats</p>
+                          </div>
+                          <span className="font-medium text-gray-900">100ml (⅓ cup)</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Oat milk</span>
-                        <span className="font-medium text-gray-900">150ml (⅔ cup)</span>
+                      <div className="border-l-4 border-green-400 pl-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="text-gray-900 font-medium">Oat milk</span>
+                            <p className="text-xs text-gray-500">Beta-glucan fiber, sustained energy</p>
+                          </div>
+                          <span className="font-medium text-gray-900">150ml (⅔ cup)</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Rolled oats</span>
-                        <span className="font-medium text-gray-900">20g (2 tbsp)</span>
+                      <div className="border-l-4 border-amber-400 pl-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="text-gray-900 font-medium">Rolled oats</span>
+                            <p className="text-xs text-gray-500">Complex carbs, protein, B-vitamins</p>
+                          </div>
+                          <span className="font-medium text-gray-900">20g (2 tbsp)</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Raw cacao powder</span>
-                        <span className="font-medium text-gray-900">5g (1 tsp)</span>
+                      <div className="border-l-4 border-purple-400 pl-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="text-gray-900 font-medium">Raw cacao powder</span>
+                            <p className="text-xs text-gray-500">Antioxidants, natural mood booster</p>
+                          </div>
+                          <span className="font-medium text-gray-900">5g (1 tsp)</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Fresh ginger</span>
-                        <span className="font-medium text-gray-900">2g (¼ tsp grated)</span>
+                      <div className="border-l-4 border-red-400 pl-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="text-gray-900 font-medium">Fresh ginger</span>
+                            <p className="text-xs text-gray-500">Anti-inflammatory, digestive support</p>
+                          </div>
+                          <span className="font-medium text-gray-900">2g (¼ tsp grated)</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Maple syrup</span>
-                        <span className="font-medium text-gray-900">10ml (2 tsp)</span>
+                      <div className="border-l-4 border-yellow-600 pl-3">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="text-gray-900 font-medium">Maple syrup</span>
+                            <p className="text-xs text-gray-500">Natural sweetener, minerals</p>
+                          </div>
+                          <span className="font-medium text-gray-900">10ml (2 tsp)</span>
+                        </div>
                       </div>
                     </div>
                   </div>

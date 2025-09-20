@@ -36,7 +36,7 @@ export default function ResultsPage() {
         goals: ['energy-boost', 'longevity'],
         dislikes: [],
         sweetnessTolerance: 'medium',
-        texturePreference: 'layered',
+        texturePreference: 'single-blend',
         budget: 'premium',
         timeOfDay: 'morning',
         activityLevel: 'moderate',
@@ -109,7 +109,7 @@ export default function ResultsPage() {
               description="Create personalized recipes for home preparation"
               icon={<Heart className="w-8 h-8" />}
               onClick={() => setSelectedPath('recipe')}
-              stats="Custom 3-layer recipes"
+              stats="Custom single-mix recipes"
               color="green"
             />
             <PathCard
@@ -348,7 +348,7 @@ function RecipeRecommendationsSection({ recommendations }: { recommendations: Re
           <Heart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Recipe Generation</h3>
           <p className="text-gray-600 mb-6">
-            Generate personalized 3-layer longevity smoothie recipes based on your profile.
+            Generate personalized single-mix longevity smoothie recipes based on your profile.
           </p>
           <button className="btn-primary">
             Generate Recipe (CHF 5)

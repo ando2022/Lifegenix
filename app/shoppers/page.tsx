@@ -58,7 +58,7 @@ export default function ShoppersPage() {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Mood-Based Recipes</h3>
                 <p className="text-gray-600">
-                  Share how you're feeling today and get a personalized 3-layer smoothie 
+                  Share how you're feeling today and get a personalized single-mix smoothie 
                   recipe optimized for your specific needs and goals.
                 </p>
               </div>
@@ -82,7 +82,7 @@ export default function ShoppersPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Sample Layered Recipe
+                Sample Single-Mix Recipe
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Here's what a personalized longevity smoothie looks like with exact measurements
@@ -97,7 +97,7 @@ export default function ShoppersPage() {
                     <div className="flex items-center space-x-4 text-sm text-gray-600">
                       <span>⚡ Energy Goal</span>
                       <span>⏱️ 5 min prep</span>
-                      <span>💰 CHF 8.50</span>
+                      <span>🌱 Plant-based</span>
                     </div>
                   </div>
 
@@ -262,9 +262,9 @@ export default function ShoppersPage() {
 
               <div className="card text-center">
                 <Star className="w-12 h-12 text-teal-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Beautiful Layered Drinks</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Beautiful Single-Mix Drinks</h3>
                 <p className="text-gray-600 text-sm">
-                  Professional 3-layer smoothie techniques that create stunning visual 
+                  Professional single-mix smoothie techniques that create perfectly blended 
                   effects while maximizing nutritional benefits.
                 </p>
               </div>
@@ -310,7 +310,7 @@ export default function ShoppersPage() {
                 <ul className="space-y-3 mb-8">
                   <li className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-gray-700">Personalized 3-layer recipe</span>
+                    <span className="text-gray-700">Personalized single-mix recipe</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-green-500" />

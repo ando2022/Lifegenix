@@ -1,11 +1,11 @@
 # Xova - Personalized Longevity Smoothie App
 
-A Next.js application that generates personalized 3-layer smoothie recipes based on user mood, health goals, and dietary preferences. The app matches users with nearby partner cafés for professional preparation.
+A Next.js application that generates personalized single-mix smoothie recipes based on user mood, health goals, and dietary preferences. The app matches users with nearby partner cafés for professional preparation.
 
 ## 🚀 Features
 
 - **Personalized Recipe Generation**: AI-powered smoothie recipes based on mood and health goals
-- **3-Layer Smoothie System**: Base layer, yogurt gradient, and light foam for optimal nutrition
+- **Single-Mix Smoothie System**: One perfectly blended smoothie for optimal nutrition and simplicity
 - **Shop Matching**: Find nearby partner cafés that can prepare your personalized recipe
 - **Allergy Management**: Complete allergen avoidance and dietary restriction support
 - **Scientific Backing**: Evidence-based ingredients and nutritional optimization
@@ -66,7 +66,7 @@ xova-app/
 
 ### User Experience
 - **Progressive Onboarding**: 4-step profile setup with progress tracking
-- **Visual Recipe Display**: Beautiful 3-layer smoothie visualization
+- **Visual Recipe Display**: Beautiful single-mix smoothie visualization with ingredient benefits
 - **Interactive Components**: Smooth animations and hover effects
 - **Mobile-First Design**: Optimized for all device sizes
 
@@ -75,7 +75,7 @@ xova-app/
 ### Colors
 - **Primary**: Teal (#14b8a6) and Mint (#22c55e) gradients
 - **Neutrals**: Gray scale from #f9fafb to #111827
-- **Accents**: Purple gradients for smoothie layers
+- **Accents**: Colorful ingredient highlights and nutritional benefits
 
 ### Typography
 - **Font**: Inter (Google Fonts)

@@ -8,12 +8,12 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Xova - Personalized Longevity Smoothies',
-  description: 'Turn your mood into a scientifically-optimized smoothie recipe. Find nearby cafés or get custom orders delivered.',
+  description: 'Turn your mood into a scientifically-optimized single-mix smoothie recipe. Find nearby cafés or get custom orders delivered.',
   keywords: 'smoothie, longevity, personalized nutrition, health, wellness, Swiss',
   authors: [{ name: 'Xova Team' }],
   openGraph: {
     title: 'Xova - Personalized Longevity Smoothies',
-    description: 'Turn your mood into a scientifically-optimized smoothie recipe.',
+    description: 'Turn your mood into a scientifically-optimized single-mix smoothie recipe.',
     type: 'website',
     locale: 'en_US',
   },

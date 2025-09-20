@@ -9,8 +9,8 @@ export default function BlogPage() {
   const blogPosts = [
     {
       id: 1,
-      title: "The Science Behind 3-Layer Smoothies",
-      excerpt: "Discover why layered smoothies provide better nutrient absorption and visual appeal compared to traditional blended drinks.",
+      title: "The Science Behind Single-Mix Smoothies",
+      excerpt: "Discover why single-mix smoothies provide optimal nutrient absorption and perfect blending compared to complex layered drinks.",
       author: "Dr. Sarah Chen",
       date: "2024-01-15",
       readTime: "5 min read",
@@ -131,11 +131,11 @@ export default function BlogPage() {
                       <span className="text-sm text-gray-500">Featured</span>
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                      The Science Behind 3-Layer Smoothies
+                      The Science Behind Single-Mix Smoothies
                     </h3>
                     <p className="text-gray-600 mb-4">
-                      Discover why layered smoothies provide better nutrient absorption and visual appeal 
-                      compared to traditional blended drinks. Learn about the physics of layering and 
+                      Discover why single-mix smoothies provide optimal nutrient absorption and perfect blending 
+                      compared to complex layered drinks. Learn about the science of ingredient synergy and 
                       how it affects bioavailability.
                     </p>
                     <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
@@ -151,7 +151,7 @@ export default function BlogPage() {
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600">By Dr. Sarah Chen</span>
                       <Link 
-                        href="/blog/the-science-behind-3-layer-smoothies"
+                        href="/blog/the-science-behind-single-mix-smoothies"
                         className="text-teal-600 hover:text-teal-700 font-medium flex items-center space-x-1"
                       >
                         <span>Read More</span>

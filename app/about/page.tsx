@@ -121,7 +121,7 @@ export default function AboutPage() {
                 <p className="text-gray-600 mb-6">
                   We started with a simple question: "What if we could turn your mood into a 
                   scientifically-optimized smoothie recipe?" This question became the foundation 
-                  for our 3-layer smoothie system, which combines the latest nutritional science 
+                  for our single-mix smoothie system, which combines the latest nutritional science 
                   with practical convenience.
                 </p>
                 
