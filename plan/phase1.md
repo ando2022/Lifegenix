@@ -1,6 +1,6 @@
 # Phase 1: Foundation & Authentication
 
-## Duration: 2 weeks
+## Duration: 3-4 days (AI-Assisted)
 
 ## Objectives
 - Set up Supabase infrastructure
@@ -320,7 +320,7 @@ export default function SignInPage() {
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <Card className="w-[400px]">
         <CardHeader>
-          <CardTitle>Welcome to Lifegenix</CardTitle>
+          <CardTitle>Welcome to xova</CardTitle>
           <CardDescription>Sign in to your account or create a new one</CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,6 +1,6 @@
 # Phase 7: Advanced Features
 
-## Duration: 2 weeks
+## Duration: 4-5 days (AI-Assisted)
 
 ## Objectives
 - AI-powered recipe optimization

@@ -1,11 +1,35 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { Menu, X, Zap } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, X, Zap, User } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { Button } from '@/components/ui/button';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+    };
+
+    getUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [supabase.auth]);
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -24,7 +48,7 @@ export default function Header() {
             <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-mint-500 rounded-lg flex items-center justify-center">
               <Zap className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gradient">LifeGenix</span>
+            <span className="text-xl font-bold text-gradient">Xova</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -42,17 +66,24 @@ export default function Header() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              href="/generate"
-              className="btn-primary"
-            >
-              Generate Smoothie
-            </Link>
-            <Link
-              href="/cafes"
-              className="btn-secondary"
-            >
-              Find Shop
+            {user ? (
+              <Link href="/dashboard">
+                <Button variant="outline" size="sm">
+                  <User className="w-4 h-4 mr-2" />
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/auth/signin">
+                <Button variant="outline" size="sm">
+                  Sign In
+                </Button>
+              </Link>
+            )}
+            <Link href="/generate">
+              <Button size="sm">
+                Generate Smoothie
+              </Button>
             </Link>
           </div>
 

@@ -22,7 +22,7 @@ A Next.js application that generates personalized 3-layer smoothie recipes based
 ## 📁 Project Structure
 
 ```
-lifegenix-app/
+xova-app/
 ├── app/                    # Next.js app directory
 │   ├── globals.css        # Global styles and Tailwind imports
 │   ├── layout.tsx         # Root layout component
@@ -98,7 +98,7 @@ lifegenix-app/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd lifegenix-app
+   cd xova-app
    ```
 
 2. **Install dependencies**
@@ -224,7 +224,7 @@ The app is ready for deployment on:
 ## 📞 Support
 
 For questions or support:
-- Email: hello@lifegenix.ch
+- Email: hello@xova.ch
 - Phone: +41 44 123 45 67
 - Documentation: [Link to docs]
 

@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 import { UserProfile, Mood, GeneratedRecipe } from '@/lib/types';
-import { RecipeGenerator } from '@/lib/recipe-generator';
+import { useAnalytics, useEngagementTracking } from '@/hooks/useAnalytics';
+import { SingleMixRecipeGenerator } from '@/lib/single-mix-recipe-generator';
 import { ShopMatcher } from '@/lib/shop-matcher';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import OnboardingForm from '@/components/OnboardingForm';
 import MoodSelector from '@/components/MoodSelector';
-import RecipeDisplay from '@/components/RecipeDisplay';
+import SingleMixRecipeDisplay from '@/components/SingleMixRecipeDisplay';
 import ShopMatches from '@/components/ShopMatches';
 
 export default function GeneratePage() {
@@ -18,8 +19,12 @@ export default function GeneratePage() {
   const [generatedRecipe, setGeneratedRecipe] = useState<GeneratedRecipe | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const recipeGenerator = new RecipeGenerator();
+  const recipeGenerator = new SingleMixRecipeGenerator();
   const shopMatcher = new ShopMatcher();
+  const { trackRecipeGeneration, trackShopInteraction } = useAnalytics();
+  
+  // Track user engagement on this page
+  useEngagementTracking();
 
   const handleOnboardingComplete = (profile: UserProfile) => {
     setUserProfile(profile);
@@ -38,10 +43,17 @@ export default function GeneratePage() {
         const recipe = recipeGenerator.generateRecipe(userProfile, mood, goal);
         const shopMatches = shopMatcher.findMatches(recipe.recipe);
         
-        setGeneratedRecipe({
+        const finalRecipe = {
           ...recipe,
           shopMatches
-        });
+        };
+        
+        setGeneratedRecipe(finalRecipe);
+        
+        // Track recipe generation
+        if (finalRecipe.singleMixRecipe) {
+          await trackRecipeGeneration(userProfile, mood, finalRecipe.singleMixRecipe);
+        }
         
         setIsGenerating(false);
         setCurrentStep('recipe');
@@ -141,7 +153,11 @@ export default function GeneratePage() {
 
         {currentStep === 'recipe' && generatedRecipe && (
           <div className="max-w-4xl mx-auto">
-            <RecipeDisplay recipe={generatedRecipe.recipe} />
+            {generatedRecipe.singleMixRecipe ? (
+              <SingleMixRecipeDisplay recipe={generatedRecipe.singleMixRecipe} />
+            ) : (
+              <div className="text-center text-gray-600">Recipe not available</div>
+            )}
             
             <div className="mt-8 text-center">
               <button

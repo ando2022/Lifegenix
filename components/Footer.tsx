@@ -23,7 +23,7 @@ export default function Footer() {
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-gray-300">
                 <Mail className="w-4 h-4" />
-                <span>hello@lifegenix.ch</span>
+                <span>hello@xova.ch</span>
               </div>
               <div className="flex items-center space-x-2 text-gray-300">
                 <MapPin className="w-4 h-4" />

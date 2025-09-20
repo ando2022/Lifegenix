@@ -1,6 +1,6 @@
 # Phase 4: Shop Owner Portal
 
-## Duration: 2.5 weeks
+## Duration: 5-6 days (AI-Assisted)
 
 ## Objectives
 - Shop registration and onboarding flow

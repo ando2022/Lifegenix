@@ -20,7 +20,7 @@ export default function HomePage() {
               <span className="text-gradient">60 seconds</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Turn your mood into a scientifically-optimized 3-layer smoothie recipe. 
+              Turn your mood into a scientifically-optimized personalized smoothie recipe. 
               Find nearby cafés or get custom orders delivered.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -66,8 +66,8 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Get Recipe</h3>
               <p className="text-gray-600">
-                Share your mood and get a personalized 3-layer smoothie 
-                recipe with exact measurements.
+                Share your mood and get a personalized smoothie 
+                recipe with exact measurements and transparency.
               </p>
             </div>
 
@@ -116,9 +116,9 @@ export default function HomePage() {
 
             <div className="card text-center">
               <Users className="w-12 h-12 text-teal-600 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Barista-Friendly Foams</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Easy Preparation</h3>
               <p className="text-gray-600 text-sm">
-                Professional techniques for beautiful layered smoothies that shops can easily make.
+                Simple, one-blend recipes that any café can make perfectly with standard equipment.
               </p>
             </div>
 
@@ -141,7 +141,7 @@ export default function HomePage() {
               Sample Recipe
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Here's what a personalized longevity smoothie looks like
+              Here's what a personalized smoothie looks like with full transparency
             </p>
           </div>
 
@@ -157,32 +157,87 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Layer 1 */}
-                  <div className="text-center">
-                    <div className="w-20 h-20 layer-gradient-1 rounded-lg mx-auto mb-3 flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">1</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Ingredients */}
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-4">Exact Ingredients</h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Frozen banana</span>
+                        <span className="font-medium text-gray-900">120g (1 medium)</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Frozen mango</span>
+                        <span className="font-medium text-gray-900">80g (½ cup)</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Coconut yogurt</span>
+                        <span className="font-medium text-gray-900">100ml (⅓ cup)</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Oat milk</span>
+                        <span className="font-medium text-gray-900">150ml (⅔ cup)</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Rolled oats</span>
+                        <span className="font-medium text-gray-900">20g (2 tbsp)</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Raw cacao powder</span>
+                        <span className="font-medium text-gray-900">5g (1 tsp)</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Fresh ginger</span>
+                        <span className="font-medium text-gray-900">2g (¼ tsp grated)</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Maple syrup</span>
+                        <span className="font-medium text-gray-900">10ml (2 tsp)</span>
+                      </div>
                     </div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Base Layer</h4>
-                    <p className="text-sm text-gray-600">Frozen banana + mango + oat milk</p>
                   </div>
 
-                  {/* Layer 2 */}
-                  <div className="text-center">
-                    <div className="w-20 h-20 layer-gradient-2 rounded-lg mx-auto mb-3 flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">2</span>
+                  {/* Instructions */}
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-4">Simple Instructions</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                          <span className="text-xs font-bold text-teal-600">1</span>
+                        </div>
+                        <p className="text-gray-600 text-sm">Add liquid ingredients first: oat milk and maple syrup</p>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                          <span className="text-xs font-bold text-teal-600">2</span>
+                        </div>
+                        <p className="text-gray-600 text-sm">Add soft ingredients: banana, yogurt, grated ginger</p>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                          <span className="text-xs font-bold text-teal-600">3</span>
+                        </div>
+                        <p className="text-gray-600 text-sm">Add frozen mango, oats, and cacao powder</p>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                          <span className="text-xs font-bold text-teal-600">4</span>
+                        </div>
+                        <p className="text-gray-600 text-sm">Blend on high for 60-90 seconds until completely smooth</p>
+                      </div>
+                      <div className="flex items-start">
+                        <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center mr-3 mt-0.5">
+                          <span className="text-xs font-bold text-teal-600">5</span>
+                        </div>
+                        <p className="text-gray-600 text-sm">Serve immediately in a chilled glass</p>
+                      </div>
                     </div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Yogurt Gradient</h4>
-                    <p className="text-sm text-gray-600">Coconut yogurt + oats + cacao</p>
-                  </div>
-
-                  {/* Layer 3 */}
-                  <div className="text-center">
-                    <div className="w-20 h-20 layer-gradient-3 rounded-lg mx-auto mb-3 flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">3</span>
+                    
+                    <div className="mt-4 p-3 bg-teal-50 rounded-lg">
+                      <p className="text-sm text-teal-800">
+                        <strong>Pro tip:</strong> For thicker consistency, use less oat milk. For protein boost, add 15g plant protein powder.
+                      </p>
                     </div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Light Foam</h4>
-                    <p className="text-sm text-gray-600">Aquafaba + ginger + maple syrup</p>
                   </div>
                 </div>
 
@@ -234,8 +289,8 @@ export default function HomePage() {
                 </div>
               </div>
               <p className="text-gray-600 mb-4">
-                "Finally, a smoothie app that actually considers my allergies! 
-                The layered recipes are beautiful and taste amazing."
+"Finally, a smoothie app that shows exact quantities! 
+                No more guessing - I know exactly what I'm drinking and it tastes amazing."
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center mr-3">

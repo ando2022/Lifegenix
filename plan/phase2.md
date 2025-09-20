@@ -1,6 +1,6 @@
 # Phase 2: Payment Integration
 
-## Duration: 1.5 weeks
+## Duration: 2-3 days (AI-Assisted)
 
 ## Objectives
 - Integrate Stripe for international payments

@@ -130,11 +130,42 @@ export interface Mood {
 
 export interface GeneratedRecipe {
   recipe: Recipe;
+  singleMixRecipe?: SingleMixRecipe; // New field for single-mix recipes
   userProfile: UserProfile;
   mood: Mood;
   shopMatches: ShopMatch[];
   price: number;
   generatedAt: Date;
+}
+
+export interface SingleMixRecipe {
+  id: string;
+  name: string;
+  goal: HealthGoal;
+  ingredients: SingleMixIngredient[];
+  instructions: string[];
+  totalNutrition: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+    fiber: number;
+    sugar: number;
+    longevityCompounds: string[];
+  };
+  cost: number;
+  prepTime: number;
+  difficulty: 'easy' | 'medium' | 'hard';
+  servings: number;
+  color: string;
+  createdAt: Date;
+}
+
+export interface SingleMixIngredient {
+  ingredient: Ingredient;
+  amount: number;
+  unit: string;
+  purpose: 'base' | 'protein' | 'superfood' | 'flavor' | 'sweetener' | 'liquid';
 }
 
 export interface ShopMatch {

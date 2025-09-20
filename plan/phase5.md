@@ -1,6 +1,6 @@
 # Phase 5: Marketplace Features
 
-## Duration: 2 weeks
+## Duration: 3-4 days (AI-Assisted)
 
 ## Objectives
 - Advanced shop matching algorithm

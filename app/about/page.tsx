@@ -257,7 +257,7 @@ export default function AboutPage() {
                   <div className="space-y-3">
                     <div>
                       <span className="font-medium text-gray-900">Email:</span>
-                      <span className="text-gray-600 ml-2">hello@lifegenix.ch</span>
+                      <span className="text-gray-600 ml-2">hello@xova.ch</span>
                     </div>
                     <div>
                       <span className="font-medium text-gray-900">Phone:</span>
