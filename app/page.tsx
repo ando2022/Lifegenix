@@ -90,7 +90,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose LifeGenix?
+              Why Choose Xova?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Science meets convenience for your health and wellness
@@ -335,7 +335,7 @@ export default function HomePage() {
                 </div>
               </div>
               <p className="text-gray-600 mb-4">
-                "As a café owner, LifeGenix has increased our smoothie sales by 40%. 
+                "As a café owner, Xova has increased our smoothie sales by 40%. 
                 The recipes are easy to follow and customers love the personalization."
               </p>
               <div className="flex items-center">

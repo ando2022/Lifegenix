@@ -33,7 +33,7 @@ export default function CafesPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Why Partner with LifeGenix?
+                Why Partner with Xova?
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Boost your business with personalized smoothie offerings
@@ -235,7 +235,7 @@ export default function CafesPage() {
                       <div className="text-3xl font-bold text-teal-600 mb-2">8-12%</div>
                       <div className="text-lg font-semibold text-gray-900 mb-2">Platform Fee</div>
                       <p className="text-gray-600 text-sm">
-                        Small commission on orders placed through LifeGenix platform
+                        Small commission on orders placed through Xova platform
                       </p>
                     </div>
 
@@ -319,7 +319,7 @@ export default function CafesPage() {
                   </div>
                 </div>
                 <p className="text-gray-600 mb-4">
-                  "LifeGenix has transformed our smoothie business. We've seen a 45% increase in sales 
+                  "Xova has transformed our smoothie business. We've seen a 45% increase in sales 
                   and our customers love the personalized approach. The training was excellent."
                 </p>
                 <div className="flex items-center">
@@ -489,7 +489,7 @@ export default function CafesPage() {
                   <textarea
                     rows={4}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    placeholder="Describe your café, target customers, and why you're interested in partnering with LifeGenix..."
+                    placeholder="Describe your café, target customers, and why you're interested in partnering with Xova..."
                   />
                 </div>
 
@@ -524,7 +524,7 @@ export default function CafesPage() {
               Ready to boost your smoothie sales?
             </h2>
             <p className="text-xl text-teal-100 mb-8">
-              Join the future of personalized nutrition and grow your business with LifeGenix
+              Join the future of personalized nutrition and grow your business with Xova
             </p>
             <Link href="#partner-form" className="bg-white text-teal-600 hover:bg-gray-50 font-medium py-3 px-8 rounded-lg transition-colors duration-200 text-lg inline-flex items-center">
               Apply Now

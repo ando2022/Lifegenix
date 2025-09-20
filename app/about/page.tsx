@@ -14,7 +14,7 @@ export default function AboutPage() {
         <section className="bg-gradient-to-r from-teal-600 to-mint-500 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              About LifeGenix
+              About Xova
             </h1>
             <p className="text-xl text-teal-100 mb-8 max-w-3xl mx-auto">
               We're on a mission to make personalized nutrition accessible, 
@@ -106,7 +106,7 @@ export default function AboutPage() {
               
               <div className="prose prose-lg max-w-none">
                 <p className="text-gray-600 mb-6">
-                  LifeGenix was born from a simple observation: despite the growing awareness 
+                  Xova was born from a simple observation: despite the growing awareness 
                   of nutrition's importance, most people still struggle to find healthy options 
                   that truly work for their individual needs.
                 </p>
@@ -126,7 +126,7 @@ export default function AboutPage() {
                 </p>
                 
                 <p className="text-gray-600 mb-6">
-                  Today, LifeGenix serves thousands of health-conscious individuals across 
+                  Today, Xova serves thousands of health-conscious individuals across 
                   Switzerland, helping them achieve their wellness goals through personalized 
                   nutrition that's both delicious and effective.
                 </p>

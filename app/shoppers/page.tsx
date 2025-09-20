@@ -33,7 +33,7 @@ export default function ShoppersPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                How LifeGenix Works for You
+                How Xova Works for You
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 From mood to smoothie in three simple steps
@@ -225,7 +225,7 @@ export default function ShoppersPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Why Choose LifeGenix?
+                Why Choose Xova?
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Science-backed personalization for your health and wellness

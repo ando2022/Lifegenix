@@ -1,4 +1,4 @@
-# LifeGenix - Personalized Longevity Smoothie App
+# Xova - Personalized Longevity Smoothie App
 
 A Next.js application that generates personalized 3-layer smoothie recipes based on user mood, health goals, and dietary preferences. The app matches users with nearby partner cafés for professional preparation.
 
@@ -234,4 +234,4 @@ This project is proprietary software. All rights reserved.
 
 ---
 
-**LifeGenix** - Personalized longevity smoothies, scientifically optimized for your health goals.
+**Xova** - Personalized longevity smoothies, scientifically optimized for your health goals.

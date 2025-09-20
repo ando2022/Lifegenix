@@ -14,7 +14,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-mint-500 rounded-lg flex items-center justify-center">
                 <Zap className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">LifeGenix</span>
+              <span className="text-xl font-bold">Xova</span>
             </Link>
             <p className="text-gray-300 mb-6 max-w-md">
               Personalized longevity smoothies, scientifically optimized for your health goals. 
@@ -118,7 +118,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-          <p>&copy; 2024 LifeGenix. All rights reserved.</p>
+          <p>&copy; 2024 Xova. All rights reserved.</p>
           <p className="mt-2 text-sm">
             This app is for informational purposes only and is not intended as medical advice. 
             Please consult with a healthcare professional before making dietary changes.

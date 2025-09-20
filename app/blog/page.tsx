@@ -80,7 +80,7 @@ export default function BlogPage() {
         <section className="bg-gradient-to-r from-teal-600 to-mint-500 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              LifeGenix Blog
+              Xova Blog
             </h1>
             <p className="text-xl text-teal-100 mb-8 max-w-3xl mx-auto">
               Expert insights on personalized nutrition, smoothie techniques, and wellness science
