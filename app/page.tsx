@@ -273,10 +273,18 @@ export default function HomePage() {
                       </div>
                     </div>
                     
-                    <div className="mt-4 p-3 bg-teal-50 rounded-lg">
-                      <p className="text-sm text-teal-800">
-                        <strong>Pro tip:</strong> For thicker consistency, use less oat milk. For protein boost, add 15g plant protein powder.
-                      </p>
+                    <div className="mt-4 space-y-3">
+                      <div className="p-3 bg-teal-50 rounded-lg">
+                        <p className="text-sm text-teal-800">
+                          <strong>Pro tip:</strong> For thicker consistency, use less oat milk. For protein boost, add 15g plant protein powder.
+                        </p>
+                      </div>
+                      
+                      <div className="p-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
+                        <p className="text-sm text-orange-800">
+                          <strong>⭐ Michelin-star upgrade:</strong> Add 1 tsp maca powder for sustained energy + 5 fresh mint leaves for digestive support. Finish with a pinch of pink Himalayan salt to enhance all flavors.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -302,6 +310,185 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Smart Café Matching */}
+      <section className="py-20 bg-gradient-to-br from-teal-50 to-mint-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Find Your Perfect Match Nearby
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Instantly discover which cafés near you can create smoothies that match your exact health goals and mood. 
+              Complete transparency about recipes, ingredients, and nutritional benefits.
+            </p>
+          </div>
+
+          <div className="max-w-6xl mx-auto">
+            {/* Goal-Based Matching Example */}
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-8">
+              <div className="p-6 bg-gradient-to-r from-teal-600 to-mint-500">
+                <div className="flex items-center space-x-4 text-white">
+                  <div className="w-12 h-12 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                    <span className="text-2xl">🎯</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold">Your Goal: Energy Boost + Immunity</h3>
+                    <p className="text-teal-100">Location: Zurich Central, 2km radius</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Café Match 1 */}
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-gray-900">Green Leaf Café</h4>
+                      <div className="flex items-center space-x-1">
+                        <span className="text-2xl text-green-500">●</span>
+                        <span className="text-sm font-medium text-green-600">98% Match</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3">📍 0.3km • 2 min walk</p>
+                    
+                    <div className="space-y-2 mb-4">
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-900">Perfect Recipe:</span>
+                        <p className="text-gray-600">Immunity Power Smoothie</p>
+                      </div>
+                      <div className="text-xs text-gray-500 space-y-1">
+                        <div>• Vitamin C: 120% daily value (orange, kiwi)</div>
+                        <div>• Energy boost: B-vitamins (oats, banana)</div>
+                        <div>• Antioxidants: Goji berries, spirulina</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">Ready in 3 min</span>
+                      <button className="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded">View Menu</button>
+                    </div>
+                  </div>
+
+                  {/* Café Match 2 */}
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-gray-900">Vitality Juice Bar</h4>
+                      <div className="flex items-center space-x-1">
+                        <span className="text-2xl text-yellow-500">●</span>
+                        <span className="text-sm font-medium text-yellow-600">94% Match</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3">📍 0.7km • 8 min walk</p>
+                    
+                    <div className="space-y-2 mb-4">
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-900">Best Recipe:</span>
+                        <p className="text-gray-600">Energy Warrior Blend</p>
+                      </div>
+                      <div className="text-xs text-gray-500 space-y-1">
+                        <div>• Natural caffeine: Matcha, guarana</div>
+                        <div>• Immune support: Zinc (pumpkin seeds)</div>
+                        <div>• Sustained energy: Complex carbs</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">Ready in 4 min</span>
+                      <button className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded">View Menu</button>
+                    </div>
+                  </div>
+
+                  {/* Café Match 3 */}
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-gray-900">Organic Corner</h4>
+                      <div className="flex items-center space-x-1">
+                        <span className="text-2xl text-orange-500">●</span>
+                        <span className="text-sm font-medium text-orange-600">87% Match</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3">📍 1.2km • 15 min walk</p>
+                    
+                    <div className="space-y-2 mb-4">
+                      <div className="text-sm">
+                        <span className="font-medium text-gray-900">Available Recipe:</span>
+                        <p className="text-gray-600">Citrus Immunity Boost</p>
+                      </div>
+                      <div className="text-xs text-gray-500 space-y-1">
+                        <div>• High vitamin C: Grapefruit, lemon</div>
+                        <div>• Gentle energy: Green tea extract</div>
+                        <div>• Missing: Some B-vitamins</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">Ready in 5 min</span>
+                      <button className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">View Menu</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-start space-x-3">
+                    <div className="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center mt-0.5">
+                      <span className="text-teal-600 text-sm">💡</span>
+                    </div>
+                    <div className="flex-1">
+                      <h5 className="font-medium text-gray-900 mb-1">Smart Recommendations</h5>
+                      <p className="text-sm text-gray-600">
+                        Based on your profile, <strong>Green Leaf Café</strong> offers the perfect nutritional match with their 
+                        Immunity Power Smoothie. It contains exactly the vitamins and energy boosters you need, 
+                        plus it's the closest to your location.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* How It Works */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">🎯</span>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Set Your Goals</h3>
+                <p className="text-gray-600 text-sm">
+                  Tell us your mood, health goals, and location. Our AI analyzes your needs instantly.
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-mint-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">🔍</span>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Smart Matching</h3>
+                <p className="text-gray-600 text-sm">
+                  We scan every café menu near you, analyzing ingredients and nutritional profiles for perfect matches.
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">📍</span>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Find & Order</h3>
+                <p className="text-gray-600 text-sm">
+                  See exactly why each café matches your goals, then order directly or visit in person.
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center mt-12">
+              <Link href="/generate" className="btn-primary text-lg px-8 py-4 inline-flex items-center">
+                Find My Perfect Café Match
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Link>
             </div>
           </div>
         </div>
