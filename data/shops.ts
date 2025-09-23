@@ -11,20 +11,20 @@ export const shops: Shop[] = [
       {
         id: 'green-smoothie',
         name: 'Green Detox Smoothie',
-        ingredients: ['spinach', 'banana', 'mango', 'coconut-milk'],
+        ingredients: ['spinach', 'banana-frozen', 'mango-frozen', 'coconut-milk'],
         price: 8.50,
         category: 'smoothie'
       },
       {
         id: 'berry-bowl',
         name: 'Acai Berry Bowl',
-        ingredients: ['acai', 'banana', 'blueberries', 'granola'],
+        ingredients: ['acai', 'banana-frozen', 'blueberries-frozen', 'granola'],
         price: 12.00,
         category: 'bowl'
       }
     ],
     capabilities: {
-      hasFrozenFruits: ['banana', 'mango', 'blueberries', 'strawberries'],
+      hasFrozenFruits: ['banana-frozen', 'mango-frozen', 'blueberries-frozen', 'strawberries-frozen'],
       hasMilks: ['oat-milk', 'almond-milk', 'coconut-milk'],
       hasYogurts: ['coconut-yogurt', 'greek-yogurt'],
       hasSuperfoods: ['chia-seeds', 'cacao-powder', 'ginger-powder'],
@@ -44,20 +44,20 @@ export const shops: Shop[] = [
       {
         id: 'tropical-smoothie',
         name: 'Tropical Paradise',
-        ingredients: ['mango', 'pineapple', 'coconut-milk', 'banana'],
+        ingredients: ['mango-frozen', 'pineapple-frozen', 'coconut-milk', 'banana-frozen'],
         price: 7.50,
         category: 'smoothie'
       },
       {
         id: 'protein-smoothie',
         name: 'Protein Power',
-        ingredients: ['banana', 'protein-powder', 'almond-milk', 'peanut-butter'],
+        ingredients: ['banana-frozen', 'greek-yogurt', 'almond-milk', 'peanut-butter'],
         price: 9.00,
         category: 'smoothie'
       }
     ],
     capabilities: {
-      hasFrozenFruits: ['banana', 'mango', 'pineapple', 'strawberries'],
+      hasFrozenFruits: ['banana-frozen', 'mango-frozen', 'pineapple-frozen', 'strawberries-frozen'],
       hasMilks: ['oat-milk', 'almond-milk', 'dairy-milk'],
       hasYogurts: ['greek-yogurt', 'soy-yogurt'],
       hasSuperfoods: ['chia-seeds', 'flax-seeds', 'protein-powder'],
@@ -77,7 +77,7 @@ export const shops: Shop[] = [
       {
         id: 'antioxidant-smoothie',
         name: 'Antioxidant Boost',
-        ingredients: ['blueberries', 'acai', 'banana', 'oat-milk'],
+        ingredients: ['blueberries-frozen', 'acai', 'banana-frozen', 'oat-milk'],
         price: 8.00,
         category: 'smoothie'
       },
@@ -90,7 +90,7 @@ export const shops: Shop[] = [
       }
     ],
     capabilities: {
-      hasFrozenFruits: ['banana', 'blueberries', 'strawberries', 'mango'],
+      hasFrozenFruits: ['banana-frozen', 'blueberries-frozen', 'strawberries-frozen', 'mango-frozen'],
       hasMilks: ['oat-milk', 'almond-milk', 'coconut-milk'],
       hasYogurts: ['coconut-yogurt', 'greek-yogurt'],
       hasSuperfoods: ['chia-seeds', 'cacao-powder', 'ginger-powder', 'oats'],
@@ -110,7 +110,7 @@ export const shops: Shop[] = [
       {
         id: 'energy-smoothie',
         name: 'Energy Blast',
-        ingredients: ['banana', 'mango', 'oats', 'honey'],
+        ingredients: ['banana-frozen', 'mango-frozen', 'oats', 'honey'],
         price: 7.00,
         category: 'smoothie'
       },
@@ -123,7 +123,7 @@ export const shops: Shop[] = [
       }
     ],
     capabilities: {
-      hasFrozenFruits: ['banana', 'mango', 'strawberries', 'blueberries'],
+      hasFrozenFruits: ['banana-frozen', 'mango-frozen', 'strawberries-frozen', 'blueberries-frozen'],
       hasMilks: ['oat-milk', 'almond-milk', 'dairy-milk'],
       hasYogurts: ['greek-yogurt', 'soy-yogurt'],
       hasSuperfoods: ['chia-seeds', 'oats', 'ginger-powder'],
@@ -143,20 +143,20 @@ export const shops: Shop[] = [
       {
         id: 'superfood-smoothie',
         name: 'Superfood Power',
-        ingredients: ['acai', 'blueberries', 'chia-seeds', 'coconut-milk'],
+        ingredients: ['acai', 'blueberries-frozen', 'chia-seeds', 'coconut-milk'],
         price: 9.50,
         category: 'smoothie'
       },
       {
         id: 'protein-bowl',
         name: 'Protein Paradise',
-        ingredients: ['greek-yogurt', 'banana', 'berries', 'granola'],
+        ingredients: ['greek-yogurt', 'banana-frozen', 'mixed-berries-frozen', 'granola'],
         price: 11.00,
         category: 'bowl'
       }
     ],
     capabilities: {
-      hasFrozenFruits: ['banana', 'blueberries', 'strawberries', 'mango', 'pineapple'],
+      hasFrozenFruits: ['banana-frozen', 'blueberries-frozen', 'strawberries-frozen', 'mango-frozen', 'pineapple-frozen'],
       hasMilks: ['oat-milk', 'almond-milk', 'coconut-milk'],
       hasYogurts: ['greek-yogurt', 'coconut-yogurt', 'soy-yogurt'],
       hasSuperfoods: ['chia-seeds', 'flax-seeds', 'cacao-powder', 'ginger-powder', 'oats'],

@@ -382,136 +382,41 @@ export default function CafesPage() {
           </div>
         </section>
 
-        {/* Partner Application Form */}
+        {/* Simple Contact Form (Email) */}
         <section id="partner-form" className="py-20 bg-gray-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Become a Partner
-              </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Join our network and start serving personalized smoothies today
-              </p>
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+              <p className="text-lg text-gray-600">Send us a quick message and we'll reply by email.</p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Café Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      placeholder="Your café name"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Contact Person *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      placeholder="Your name"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      placeholder="+41 XX XXX XX XX"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Address *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      placeholder="Street address, city, postal code"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Website/Menu URL
-                    </label>
-                    <input
-                      type="url"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                      placeholder="https://your-cafe.com"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Current Smoothie Sales (per day)
-                    </label>
-                    <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
-                      <option value="">Select range</option>
-                      <option value="0-5">0-5 smoothies</option>
-                      <option value="6-15">6-15 smoothies</option>
-                      <option value="16-30">16-30 smoothies</option>
-                      <option value="30+">30+ smoothies</option>
-                    </select>
-                  </div>
-                </div>
-
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+              <form
+                className="space-y-5"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const form = e.currentTarget as HTMLFormElement;
+                  const name = (form.querySelector('#contact-name') as HTMLInputElement)?.value || '';
+                  const email = (form.querySelector('#contact-email') as HTMLInputElement)?.value || '';
+                  const message = (form.querySelector('#contact-message') as HTMLTextAreaElement)?.value || '';
+                  const subject = encodeURIComponent(`Xova Partner Inquiry - ${name}`);
+                  const body = encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${message}`);
+                  window.location.href = `mailto:anbo.do@icloud.com?subject=${subject}&body=${body}`;
+                }}
+              >
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Tell us about your café
-                  </label>
-                  <textarea
-                    rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    placeholder="Describe your café, target customers, and why you're interested in partnering with Xova..."
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="contact-name">Your Name</label>
+                  <input id="contact-name" type="text" required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Your name" />
                 </div>
-
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="terms"
-                    required
-                    className="w-4 h-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="terms" className="ml-2 text-sm text-gray-700">
-                    I agree to the <Link href="/terms" className="text-teal-600 hover:underline">Terms of Service</Link> and 
-                    <Link href="/privacy" className="text-teal-600 hover:underline ml-1">Privacy Policy</Link>
-                  </label>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="contact-email">Your Email</label>
+                  <input id="contact-email" type="email" required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="you@example.com" />
                 </div>
-
-                <button
-                  type="submit"
-                  className="w-full btn-primary text-lg py-3"
-                >
-                  Submit Partnership Application
-                </button>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="contact-message">Message</label>
+                  <textarea id="contact-message" rows={4} required className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder="Tell us briefly what you need..." />
+                </div>
+                <button type="submit" className="w-full btn-primary text-lg py-3">Send Email</button>
               </form>
             </div>
           </div>

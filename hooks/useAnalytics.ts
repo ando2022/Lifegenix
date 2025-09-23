@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { userTracker } from '@/lib/user-tracking';
+import { getUserTracker } from '@/lib/user-tracking';
 import * as analytics from '@/lib/analytics';
 
 export const useAnalytics = () => {
@@ -15,11 +15,16 @@ export const useAnalytics = () => {
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       analytics.trackPageView(url);
-      userTracker.trackPageView(url);
+      try {
+        const tracker = getUserTracker();
+        tracker.trackPageView(url);
+      } catch {}
     };
 
     // Track initial page view
-    handleRouteChange(window.location.pathname);
+    if (typeof window !== 'undefined') {
+      handleRouteChange(window.location.pathname);
+    }
 
     // Note: Next.js 13+ app router doesn't have router events
     // You might need to implement this differently or use a different approach
@@ -31,7 +36,10 @@ export const useAnalytics = () => {
 
   const trackUserRegistration = useCallback(async (user: any, profile: any) => {
     analytics.trackUserRegistration('email', user.id);
-    await userTracker.trackUserRegistration(user, profile);
+    try {
+      const tracker = getUserTracker();
+      await tracker.trackUserRegistration(user, profile);
+    } catch {}
   }, []);
 
   const trackRecipeGeneration = useCallback(async (profile: any, mood: any, recipe: any) => {
@@ -42,22 +50,34 @@ export const useAnalytics = () => {
       cost: recipe.cost,
       userId: profile.id
     });
-    await userTracker.trackRecipeGeneration(profile, mood, recipe);
+    try {
+      const tracker = getUserTracker();
+      await tracker.trackRecipeGeneration(profile, mood, recipe);
+    } catch {}
   }, []);
 
   const trackShopInteraction = useCallback(async (action: string, shopId: string, shopName?: string) => {
     analytics.trackShopInteraction(action, shopId, shopName);
-    await userTracker.trackShopInteraction(action, shopId, { shopName });
+    try {
+      const tracker = getUserTracker();
+      await tracker.trackShopInteraction(action, shopId, { shopName });
+    } catch {}
   }, []);
 
   const trackConversion = useCallback(async (conversionType: string, value?: number, additionalData?: Record<string, any>) => {
     analytics.trackConversion(conversionType, value, 'CHF', additionalData);
-    await userTracker.trackConversion(conversionType, value, additionalData);
+    try {
+      const tracker = getUserTracker();
+      await tracker.trackConversion(conversionType, value, additionalData);
+    } catch {}
   }, []);
 
   const trackError = useCallback(async (error: Error, context?: string) => {
     analytics.trackError(error, context);
-    await userTracker.trackError(error, context);
+    try {
+      const tracker = getUserTracker();
+      await tracker.trackError(error, context);
+    } catch {}
   }, []);
 
   const trackCustomEvent = useCallback(async (eventName: string, properties: Record<string, any>) => {

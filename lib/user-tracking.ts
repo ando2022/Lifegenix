@@ -52,7 +52,9 @@ export class UserTracker {
 
   constructor() {
     this.sessionId = this.generateSessionId();
-    this.initializeSession();
+    if (typeof window !== 'undefined') {
+      this.initializeSession();
+    }
   }
 
   private generateSessionId(): string {
@@ -71,7 +73,7 @@ export class UserTracker {
       sessionId: this.sessionId,
       deviceInfo: this.getDeviceInfo(),
       location: await this.getLocationInfo(),
-      referrer: document.referrer || undefined,
+      referrer: typeof document !== 'undefined' ? document.referrer || undefined : undefined,
       startTime: new Date(),
       lastActivity: new Date(),
       pageViews: 0,
@@ -81,17 +83,17 @@ export class UserTracker {
     // Track session start
     await this.trackEvent('user_action', 'session_start', {
       isReturningUser: !!this.userId,
-      userAgent: navigator.userAgent,
-      referrer: document.referrer
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+      referrer: typeof document !== 'undefined' ? document.referrer : ''
     });
   }
 
   private getDeviceInfo() {
     return {
-      userAgent: navigator.userAgent,
-      platform: navigator.platform,
-      language: navigator.language,
-      screenResolution: `${screen.width}x${screen.height}`,
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : '',
+      platform: typeof navigator !== 'undefined' ? navigator.platform : '',
+      language: typeof navigator !== 'undefined' ? navigator.language : '',
+      screenResolution: typeof window !== 'undefined' ? `${window.screen.width}x${window.screen.height}` : '',
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
     };
   }
@@ -205,7 +207,7 @@ export class UserTracker {
       eventName,
       properties,
       timestamp: new Date(),
-      page: window.location.pathname
+      page: typeof window !== 'undefined' ? window.location.pathname : '/'
     };
 
     // Add to session events
@@ -355,4 +357,15 @@ export class UserTracker {
 }
 
 // Global tracker instance
-export const userTracker = new UserTracker();
+let trackerInstance: UserTracker | null = null;
+
+export const getUserTracker = (): UserTracker => {
+  if (typeof window === 'undefined') {
+    // Prevent usage on server
+    throw new Error('UserTracker is client-only');
+  }
+  if (!trackerInstance) {
+    trackerInstance = new UserTracker();
+  }
+  return trackerInstance;
+};

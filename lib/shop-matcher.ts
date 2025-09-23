@@ -1,11 +1,12 @@
-import { Shop, ShopMatch, Recipe, UserProfile } from '@/lib/types';
-import { shops } from '@/data/shops';
+import { Shop, ShopMatch, Recipe } from '@/lib/types';
+import { SingleMixRecipe } from '@/lib/single-mix-recipe-generator';
+import { zurichShops } from '@/data/zurich-shops';
 
 export class ShopMatcher {
   private shops: Shop[];
 
   constructor() {
-    this.shops = shops;
+    this.shops = zurichShops;
   }
 
   findMatches(recipe: Recipe, userLocation?: { lat: number; lng: number }): ShopMatch[] {
@@ -45,6 +46,43 @@ export class ShopMatcher {
     });
   }
 
+  // Single-mix supporting matcher
+  findMatchesForSingleMix(singleMixRecipe: SingleMixRecipe, userLocation?: { lat: number; lng: number }): ShopMatch[] {
+    const matches: ShopMatch[] = [];
+
+    this.shops.forEach(shop => {
+      const matchScore = this.calculateSingleMixMatchScore(singleMixRecipe, shop);
+      const missingIngredients = this.findMissingSingleMixIngredients(singleMixRecipe, shop);
+      const suggestedSwaps = this.generateSuggestedSingleMixSwaps(singleMixRecipe, shop);
+      const estimatedPrice = this.estimatePriceForSingleMix(singleMixRecipe, shop);
+      const prepTime = this.estimatePrepTimeForSingleMix(singleMixRecipe, shop);
+
+      if (matchScore > 30) {
+        matches.push({
+          shop: {
+            ...shop,
+            distance: userLocation ? this.calculateDistance(userLocation, shop.coordinates) : undefined
+          },
+          matchScore,
+          missingIngredients,
+          suggestedSwaps,
+          estimatedPrice,
+          prepTime
+        });
+      }
+    });
+
+    return matches.sort((a, b) => {
+      if (a.matchScore !== b.matchScore) {
+        return b.matchScore - a.matchScore;
+      }
+      if (a.shop.distance && b.shop.distance) {
+        return a.shop.distance - b.shop.distance;
+      }
+      return 0;
+    });
+  }
+
   private calculateMatchScore(recipe: Recipe, shop: Shop): number {
     let score = 0;
     let totalIngredients = 0;
@@ -66,6 +104,22 @@ export class ShopMatcher {
     if (recipe.layers.length > 1 && shop.capabilities.canMakeLayered) {
       score += 0.5;
     }
+
+    return totalIngredients > 0 ? Math.round((score / totalIngredients) * 100) : 0;
+  }
+
+  private calculateSingleMixMatchScore(singleMixRecipe: SingleMixRecipe, shop: Shop): number {
+    let score = 0;
+    const totalIngredients = singleMixRecipe.ingredients.length;
+
+    singleMixRecipe.ingredients.forEach(item => {
+      const ingredient = item.ingredient as any;
+      if (this.shopHasIngredient(ingredient, shop)) {
+        score += 1;
+      } else if (this.shopHasSimilarIngredient(ingredient, shop)) {
+        score += 0.7;
+      }
+    });
 
     return totalIngredients > 0 ? Math.round((score / totalIngredients) * 100) : 0;
   }
@@ -151,6 +205,19 @@ export class ShopMatcher {
     return missing;
   }
 
+  private findMissingSingleMixIngredients(singleMixRecipe: SingleMixRecipe, shop: Shop): string[] {
+    const missing: string[] = [];
+
+    singleMixRecipe.ingredients.forEach(item => {
+      const ingredient = item.ingredient as any;
+      if (!this.shopHasIngredient(ingredient, shop) && !this.shopHasSimilarIngredient(ingredient, shop)) {
+        missing.push(ingredient.name);
+      }
+    });
+
+    return missing;
+  }
+
   private generateSuggestedSwaps(recipe: Recipe, shop: Shop): string[] {
     const swaps: string[] = [];
 
@@ -165,6 +232,22 @@ export class ShopMatcher {
           }
         }
       });
+    });
+
+    return swaps;
+  }
+
+  private generateSuggestedSingleMixSwaps(singleMixRecipe: SingleMixRecipe, shop: Shop): string[] {
+    const swaps: string[] = [];
+
+    singleMixRecipe.ingredients.forEach(item => {
+      const ingredient = item.ingredient as any;
+      if (!this.shopHasIngredient(ingredient, shop)) {
+        const similar = this.findSimilarIngredient(ingredient, shop);
+        if (similar) {
+          swaps.push(`${ingredient.name} → ${similar.name}`);
+        }
+      }
     });
 
     return swaps;
@@ -209,6 +292,20 @@ export class ShopMatcher {
     return Math.round(basePrice * multiplier * 100) / 100;
   }
 
+  private estimatePriceForSingleMix(singleMixRecipe: SingleMixRecipe, shop: Shop): number {
+    // Base price for single-mix smoothie
+    let basePrice = 7.5;
+    const shopPricing: { [key: string]: number } = {
+      'greenbar-zurich': 1.2,
+      'juice-bar-basel': 0.9,
+      'healthy-cafe-geneva': 1.0,
+      'smoothie-king-bern': 0.8,
+      'vitality-bar-lausanne': 1.3
+    };
+    const multiplier = shopPricing[shop.id] || 1.0;
+    return Math.round(basePrice * multiplier * 100) / 100;
+  }
+
   private estimatePrepTime(recipe: Recipe, shop: Shop): number {
     let baseTime = shop.capabilities.prepTime;
 
@@ -221,6 +318,14 @@ export class ShopMatcher {
     const missingCount = this.findMissingIngredients(recipe, shop).length;
     baseTime += missingCount * 0.5;
 
+    return Math.round(baseTime);
+  }
+
+  private estimatePrepTimeForSingleMix(singleMixRecipe: SingleMixRecipe, shop: Shop): number {
+    let baseTime = shop.capabilities.prepTime;
+    // Add time if there are missing ingredients (need substitutions)
+    const missingCount = this.findMissingSingleMixIngredients(singleMixRecipe, shop).length;
+    baseTime += missingCount * 0.5;
     return Math.round(baseTime);
   }
 

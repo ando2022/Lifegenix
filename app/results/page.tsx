@@ -1,12 +1,27 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { UserProfile, ShopRecommendation, RecipeRecommendation, SubscriptionPlan } from '@/lib/types';
 import { RecommendationEngine } from '@/lib/recommendation-engine';
 import { shops } from '@/data/shops';
 import { MapPin, Clock, DollarSign, Star, Plus, ShoppingCart, Calendar, Heart } from 'lucide-react';
 
 export default function ResultsPage() {
+  // Redirect this legacy route to the dedicated analysis page
+  const router = useRouter();
+  useEffect(() => {
+    router.replace('/analysis');
+  }, [router]);
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-gray-600">Loading your personalized analysis…</div>
+    </div>
+  );
+}
+
+/* Legacy recommendations view retained below (no longer shown) */
+export function LegacyResultsPage() {
   const [selectedPath, setSelectedPath] = useState<'shop' | 'recipe' | 'subscription' | null>(null);
   const [recommendations, setRecommendations] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -54,7 +69,12 @@ export default function ResultsPage() {
     setUserProfile(profile);
     
     // Generate recommendations
-    const results = RecommendationEngine.generateRecommendations(profile, shops);
+    let results: any = null;
+    try {
+      results = RecommendationEngine.generateRecommendations(profile, shops);
+    } catch {
+      results = { shopRecommendations: [], recipeRecommendations: [], subscriptionPlans: [] };
+    }
     setRecommendations(results);
     setLoading(false);
   }, []);
@@ -81,7 +101,7 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" id="analysis">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">

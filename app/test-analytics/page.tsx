@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { userTracker } from '@/lib/user-tracking';
+import { getUserTracker } from '@/lib/user-tracking';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Header from '@/components/Header';
@@ -16,7 +16,7 @@ export default function TestAnalyticsPage() {
   };
 
   const testPageView = async () => {
-    await userTracker.trackPageView('/test-analytics', { test: true });
+    try { await getUserTracker().trackPageView('/test-analytics', { test: true }); } catch {}
     addEvent('Page view tracked');
   };
 
@@ -48,15 +48,15 @@ export default function TestAnalyticsPage() {
       name: 'Energetic'
     };
 
-    await userTracker.trackRecipeGeneration(mockProfile, mockMood, mockRecipe);
+    try { await getUserTracker().trackRecipeGeneration(mockProfile, mockMood, mockRecipe); } catch {}
     addEvent('Recipe generation tracked');
   };
 
   const testShopInteraction = async () => {
-    await userTracker.trackShopInteraction('shop_viewed', 'test-shop-123', {
+    try { await getUserTracker().trackShopInteraction('shop_viewed', 'test-shop-123', {
       shopName: 'Test Juice Bar',
       city: 'Zürich'
-    });
+    }); } catch {}
     addEvent('Shop interaction tracked');
   };
 
@@ -75,7 +75,8 @@ export default function TestAnalyticsPage() {
   };
 
   const getSessionData = async () => {
-    const sessionData = await userTracker.getSessionData();
+    let sessionData = null as any;
+    try { sessionData = await getUserTracker().getSessionData(); } catch {}
     console.log('Current session data:', sessionData);
     addEvent('Session data logged to console');
   };

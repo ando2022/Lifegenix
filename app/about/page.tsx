@@ -1,22 +1,45 @@
 'use client';
 
-import { Heart, Users, Zap, Shield } from 'lucide-react';
+import { useState } from 'react';
+import { Heart, Users, Zap, Shield, Mail, Send } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export default function AboutPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // In a real app, this would send to your backend
+    console.log('Contact form submitted:', formData);
+    alert('Thank you for your message! We\'ll get back to you soon.');
+    setFormData({ name: '', email: '', subject: '', message: '' });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
       <main>
         {/* Hero Section */}
-        <section className="bg-gradient-to-r from-teal-600 to-mint-500 py-20">
+        <section className="bg-gradient-to-r from-violet-600 to-fuchsia-500 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
               About Xova
             </h1>
-            <p className="text-xl text-teal-100 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl text-violet-100 mb-8 max-w-3xl mx-auto">
               We're on a mission to make personalized nutrition accessible, 
               delicious, and scientifically-backed for everyone.
             </p>
@@ -44,6 +67,33 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Why Xova Works (moved from recipe page) */}
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Why Xova Works For You</h2>
+              <ul className="space-y-4 text-gray-700 text-lg">
+                <li className="flex items-start">
+                  <span className="w-6 h-6 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center mr-3">✓</span>
+                  <span><strong className="text-gray-900">Transparency & Trust:</strong> Every ingredient is listed, no hidden additives.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-6 h-6 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center mr-3">✓</span>
+                  <span><strong className="text-gray-900">Taste‑First Approach:</strong> Optimized for deliciousness, not just health.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-6 h-6 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center mr-3">✓</span>
+                  <span><strong className="text-gray-900">Simple Preparation:</strong> Easy‑to‑follow steps for a quick blend.</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="w-6 h-6 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center mr-3">✓</span>
+                  <span><strong className="text-gray-900">Personalized Nutrition:</strong> Tailored to your unique profile and goals.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Values */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -57,8 +107,8 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="card text-center">
-                <Heart className="w-12 h-12 text-teal-600 mx-auto mb-4" />
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center">
+                <Heart className="w-12 h-12 text-violet-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Health First</h3>
                 <p className="text-gray-600 text-sm">
                   Every recipe is designed with your health and wellness as the top priority, 
@@ -66,8 +116,8 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <div className="card text-center">
-                <Users className="w-12 h-12 text-teal-600 mx-auto mb-4" />
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center">
+                <Users className="w-12 h-12 text-violet-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Personalization</h3>
                 <p className="text-gray-600 text-sm">
                   We understand that one size doesn't fit all. Our platform adapts to your 
@@ -75,8 +125,8 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <div className="card text-center">
-                <Zap className="w-12 h-12 text-teal-600 mx-auto mb-4" />
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center">
+                <Zap className="w-12 h-12 text-violet-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Innovation</h3>
                 <p className="text-gray-600 text-sm">
                   We continuously push the boundaries of what's possible in personalized 
@@ -84,8 +134,8 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <div className="card text-center">
-                <Shield className="w-12 h-12 text-teal-600 mx-auto mb-4" />
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 text-center">
+                <Shield className="w-12 h-12 text-violet-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Transparency</h3>
                 <p className="text-gray-600 text-sm">
                   We believe in complete transparency about our ingredients, methods, 
@@ -147,40 +197,17 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="card text-center">
-                <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-teal-600">AD</span>
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100 text-center">
+                <div className="w-24 h-24 bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-3xl font-bold text-violet-600">X</span>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Anastasia Dobson</h3>
-                <p className="text-teal-600 font-medium mb-2">Founder & CEO</p>
-                <p className="text-gray-600 text-sm">
-                  Data scientist with expertise in longevity research and personalized nutrition. 
-                  Passionate about making science-backed health accessible to everyone.
-                </p>
-              </div>
-
-              <div className="card text-center">
-                <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-teal-600">DR</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Dr. Sarah Chen</h3>
-                <p className="text-teal-600 font-medium mb-2">Head of Nutrition Science</p>
-                <p className="text-gray-600 text-sm">
-                  Registered dietitian with 10+ years of experience in clinical nutrition 
-                  and functional medicine. Ensures all recipes meet scientific standards.
-                </p>
-              </div>
-
-              <div className="card text-center">
-                <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-teal-600">MR</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Marcus Rodriguez</h3>
-                <p className="text-teal-600 font-medium mb-2">Head of Technology</p>
-                <p className="text-gray-600 text-sm">
-                  Full-stack developer with expertise in AI and machine learning. 
-                  Builds the technology that powers our personalization engine.
+                <h3 className="text-2xl font-semibold text-gray-900 mb-2">Xova Team</h3>
+                <p className="text-violet-600 font-medium mb-4 text-lg">Founding Team</p>
+                <p className="text-gray-600 mb-6">
+                  Our team combines expertise in data science, nutrition research, and technology 
+                  to create personalized wellness solutions. We're passionate about making 
+                  science-backed health accessible to everyone through innovative technology.
                 </p>
               </div>
             </div>
@@ -199,7 +226,7 @@ export default function AboutPage() {
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-                <div className="card">
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">What We Collect</h3>
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li>• Health goals and dietary preferences</li>
@@ -209,7 +236,7 @@ export default function AboutPage() {
                   </ul>
                 </div>
 
-                <div className="card">
+                <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                   <h3 className="text-lg font-semibold text-gray-900 mb-3">How We Protect It</h3>
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li>• End-to-end encryption for all data</li>
@@ -226,10 +253,10 @@ export default function AboutPage() {
                   your information at any time through your account settings.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a href="/privacy" className="text-teal-600 hover:text-teal-700 font-medium">
+                  <a href="/privacy" className="text-violet-600 hover:text-violet-700 font-medium">
                     Read our Privacy Policy
                   </a>
-                  <a href="/terms" className="text-teal-600 hover:text-teal-700 font-medium">
+                  <a href="/terms" className="text-violet-600 hover:text-violet-700 font-medium">
                     View Terms of Service
                   </a>
                 </div>
@@ -250,47 +277,99 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
-                  <div className="space-y-3">
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <span className="font-medium text-gray-900">Email:</span>
-                      <span className="text-gray-600 ml-2">hello@xova.ch</span>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                        Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-colors"
+                        placeholder="Your name"
+                      />
                     </div>
                     <div>
-                      <span className="font-medium text-gray-900">Phone:</span>
-                      <span className="text-gray-600 ml-2">+41 44 123 45 67</span>
-                    </div>
-                    <div>
-                      <span className="font-medium text-gray-900">Address:</span>
-                      <span className="text-gray-600 ml-2">Switzerland</span>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-colors"
+                        placeholder="your@email.com"
+                      />
                     </div>
                   </div>
-                </div>
-
-                <div className="card">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Business Hours</h3>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Monday - Friday:</span>
-                      <span className="text-gray-900">9:00 AM - 6:00 PM</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Saturday:</span>
-                      <span className="text-gray-900">10:00 AM - 4:00 PM</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Sunday:</span>
-                      <span className="text-gray-900">Closed</span>
-                    </div>
+                  
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                      Subject *
+                    </label>
+                    <select
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-colors"
+                    >
+                      <option value="">Select a subject</option>
+                      <option value="general">General Inquiry</option>
+                      <option value="support">Technical Support</option>
+                      <option value="partnership">Partnership Opportunity</option>
+                      <option value="feedback">Feedback</option>
+                      <option value="other">Other</option>
+                    </select>
                   </div>
-                </div>
+                  
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                      Message *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows={5}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-colors resize-none"
+                      placeholder="Tell us how we can help you..."
+                    />
+                  </div>
+                  
+                  <div className="text-center">
+                    <button
+                      type="submit"
+                      className="inline-flex items-center px-8 py-4 bg-violet-600 text-white font-semibold rounded-lg hover:bg-violet-700 focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 transition-colors shadow-lg"
+                    >
+                      <Send className="w-5 h-5 mr-2" />
+                      Send Message
+                    </button>
+                  </div>
+                  
+                  <div className="text-center text-sm text-gray-500">
+                    <p>We'll respond to your message within 24 hours.</p>
+                    <p className="mt-1">For urgent inquiries, please contact us directly.</p>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </section>
+
       </main>
 
       <Footer />

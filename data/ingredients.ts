@@ -334,5 +334,23 @@ export const ingredients: Ingredient[] = [
     allergens: [],
     cost: 0.30,
     quality: 'premium'
+  },
+  // Vegetables
+  {
+    id: 'spinach',
+    name: 'Fresh Spinach',
+    category: 'vegetables',
+    nutrition: {
+      calories: 23,
+      protein: 2.9,
+      carbs: 3.6,
+      fat: 0.4,
+      fiber: 2.2,
+      sugar: 0.4,
+      longevityCompounds: ['iron', 'magnesium', 'folate', 'vitamin-k', 'antioxidants']
+    },
+    allergens: [],
+    cost: 0.08,
+    quality: 'standard'
   }
 ];

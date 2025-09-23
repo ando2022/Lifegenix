@@ -16,11 +16,11 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200;
+    @apply bg-violet-600 hover:bg-violet-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200;
   }
   
   .btn-secondary {
-    @apply bg-white hover:bg-gray-50 text-teal-600 font-medium py-3 px-6 rounded-lg border border-teal-600 transition-colors duration-200;
+    @apply bg-white hover:bg-violet-50 text-violet-700 font-medium py-3 px-6 rounded-lg border border-violet-600 transition-colors duration-200;
   }
   
   .card {
@@ -28,11 +28,11 @@
   }
   
   .gradient-bg {
-    background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%);
+    background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 50%, #c4b5fd 100%);
   }
   
   .smoothie-gradient {
-    background: linear-gradient(180deg, #8b5cf6 0%, #a855f7 50%, #c084fc 100%);
+    background: linear-gradient(180deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%);
   }
   
   .layer-gradient-1 {
@@ -40,20 +40,43 @@
   }
   
   .layer-gradient-2 {
-    background: linear-gradient(180deg, #a855f7 0%, #c084fc 100%);
+    background: linear-gradient(180deg, #8b5cf6 0%, #a78bfa 100%);
   }
   
   .layer-gradient-3 {
-    background: linear-gradient(180deg, #e0e7ff 0%, #f3e8ff 100%);
+    background: linear-gradient(180deg, #c4b5fd 0%, #e9d5ff 100%);
   }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-teal-600 to-mint-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-violet-600 to-fuchsia-500 bg-clip-text text-transparent;
+  }
+
+  /* Brand gradient used in logo: indigo → violet → fuchsia */
+  .text-brand-gradient {
+    @apply bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent;
   }
   
   .shadow-smoothie {
-    box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.1), 0 10px 10px -5px rgba(139, 92, 246, 0.04);
+    box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.12), 0 10px 10px -5px rgba(124, 58, 237, 0.06);
   }
+
+  .heading-glow {
+    text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+    letter-spacing: -0.02em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .animate-delay-1 { animation-delay: 100ms; }
+  .animate-delay-2 { animation-delay: 200ms; }
+  .animate-delay-3 { animation-delay: 300ms; }
 }

@@ -1,3 +1,24 @@
+export type AppEvent =
+  | 'HeroViewed' | 'CTA_Click_Generate' | 'CTA_Click_FindShop'
+  | 'Profile_Started' | 'Profile_Allergies_Selected' | 'Profile_Intolerances_Selected' | 'Profile_Goals_Selected' | 'Profile_Completed' | 'Profile_Skipped' | 'Profile_Skipped_Completely'
+  | 'CheckIn_Started' | 'CheckIn_Completed' | 'CheckIn_Skipped'
+  | 'SoftGate_SetupProfile_Click' | 'SoftGate_ContinueToShops_Click';
+
+export function logEvent(name: AppEvent, meta: Record<string, any> = {}) {
+  try {
+    if (typeof window !== 'undefined') {
+      const payload = { name, ts: Date.now(), ...meta };
+      // Placeholder analytics: console + localStorage
+      // Replace with your real analytics later
+      // optional: navigator.sendBeacon('/api/analytics', JSON.stringify(payload))
+      // eslint-disable-next-line no-console
+      console.log('[analytics]', payload);
+      const events = JSON.parse(localStorage.getItem('xova_events') || '[]');
+      events.push(payload);
+      localStorage.setItem('xova_events', JSON.stringify(events));
+    }
+  } catch {}
+}
 // Google Analytics 4 Integration
 declare global {
   interface Window {

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChefHat, Heart, MapPin, CreditCard } from 'lucide-react';
+import { ChefHat, Heart, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function DashboardPage() {
@@ -64,7 +64,7 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push('/generate')}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ChefHat className="w-5 h-5 text-teal-600" />
@@ -75,13 +75,13 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full">
+              <Button className="w-full" onClick={() => router.push('/generate')}>
                 Start Generating
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push('/cafes')}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Heart className="w-5 h-5 text-red-600" />
@@ -109,7 +109,7 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full" onClick={() => router.push('/cafes')}>
                 Find Shops
               </Button>
             </CardContent>
@@ -150,7 +150,7 @@ export default function DashboardPage() {
               <p className="text-gray-600 mb-4">
                 Start by generating your first smoothie recipe!
               </p>
-              <Button>
+              <Button onClick={() => router.push('/generate')}>
                 <ChefHat className="w-4 h-4 mr-2" />
                 Generate Your First Smoothie
               </Button>

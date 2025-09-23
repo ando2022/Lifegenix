@@ -1,21 +1,68 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UserProfile, Mood, GeneratedRecipe } from '@/lib/types';
 import { useAnalytics, useEngagementTracking } from '@/hooks/useAnalytics';
 import { SingleMixRecipeGenerator } from '@/lib/single-mix-recipe-generator';
 import { ShopMatcher } from '@/lib/shop-matcher';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import OnboardingForm from '@/components/OnboardingForm';
-import MoodSelector from '@/components/MoodSelector';
+import DailyCheckIn from '@/components/DailyCheckIn';
 import SingleMixRecipeDisplay from '@/components/SingleMixRecipeDisplay';
 import ShopMatches from '@/components/ShopMatches';
+import { locationService } from '@/lib/location-service';
+
+// Helper function to determine goal based on mood, time of day, and user profile
+function determineGoal(mood: string, userProfile: any, sleepQuality: number): string {
+  const hour = new Date().getHours();
+  const timeOfDay = hour >= 5 && hour < 12 ? 'morning' : hour >= 12 && hour < 18 ? 'afternoon' : 'evening';
+  
+  // Time-based goal determination with sleep quality consideration
+  if (timeOfDay === 'morning') {
+    if (mood === 'tired' || sleepQuality <= 2) return 'energy-boost';
+    if (mood === 'stressed' && sleepQuality <= 2) return 'calm-stomach';
+    if (mood === 'hungry') return 'meal-replacement';
+    if (sleepQuality >= 3 && mood === 'energized') return 'longevity';
+    return 'energy-boost'; // Default for morning
+  }
+  
+  if (timeOfDay === 'afternoon') {
+    if (mood === 'tired' || sleepQuality <= 2) return 'energy-boost';
+    if (mood === 'stressed') return 'calm-stomach';
+    if (mood === 'hungry') return 'meal-replacement';
+    if (mood === 'focused' && sleepQuality >= 3) return 'brain-health';
+    return 'energy-boost'; // Default for afternoon
+  }
+  
+  if (timeOfDay === 'evening') {
+    if (mood === 'stressed' || sleepQuality <= 2) return 'calm-stomach';
+    if (mood === 'tired') return 'gut-health';
+    if (mood === 'relaxed' && sleepQuality >= 3) return 'longevity';
+    return 'gut-health'; // Default for evening
+  }
+  
+  // Mood-based goal determination (fallback)
+  if (mood === 'tired') return 'energy-boost';
+  if (mood === 'stressed') return 'calm-stomach';
+  if (mood === 'hungry') return 'meal-replacement';
+  if (mood === 'focused') return 'brain-health';
+  if (mood === 'energized') return 'longevity';
+  if (mood === 'relaxed') return 'gut-health';
+  
+  // User profile goal preference (if available)
+  if (userProfile?.goals?.includes('Energy')) return 'energy-boost';
+  if (userProfile?.goals?.includes('Detox')) return 'gut-health';
+  if (userProfile?.goals?.includes('Longevity')) return 'longevity';
+  if (userProfile?.goals?.includes('Focus')) return 'brain-health';
+  if (userProfile?.goals?.includes('Immune')) return 'immune-support';
+  
+  return 'energy-boost'; // Ultimate fallback
+}
 
 export default function GeneratePage() {
-  const [currentStep, setCurrentStep] = useState<'onboarding' | 'mood' | 'recipe' | 'shops'>('onboarding');
+  const [currentStep, setCurrentStep] = useState<'checkin' | 'analysis' | 'recipe' | 'shops'>('checkin');
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [selectedMood, setSelectedMood] = useState<Mood | undefined>(undefined);
+  const [checkInData, setCheckInData] = useState<any>(null);
   const [generatedRecipe, setGeneratedRecipe] = useState<GeneratedRecipe | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -26,22 +73,119 @@ export default function GeneratePage() {
   // Track user engagement on this page
   useEngagementTracking();
 
-  const handleOnboardingComplete = (profile: UserProfile) => {
-    setUserProfile(profile);
-    setCurrentStep('mood');
+  // Load state from localStorage on mount and auto-resume recipe step
+  useEffect(() => {
+    try {
+      const savedProfileStr = localStorage.getItem('userProfile');
+      const savedCheckInStr = localStorage.getItem('lastCheckIn');
+      const cachedRecipeStr = localStorage.getItem('generatedRecipeCache');
+      const savedStep = localStorage.getItem('generate_currentStep');
+
+      if (savedProfileStr) {
+        const profile = JSON.parse(savedProfileStr);
+        setUserProfile(profile);
+      }
+      if (savedCheckInStr) {
+        const ci = JSON.parse(savedCheckInStr);
+        setCheckInData(ci);
+      }
+      if (cachedRecipeStr) {
+        const cached = JSON.parse(cachedRecipeStr);
+        setGeneratedRecipe(cached);
+        setCurrentStep('recipe');
+        return; // hydrate directly
+      }
+      // If we have profile + last check-in but no cache, auto-generate and go to recipe
+      if (savedProfileStr && savedCheckInStr) {
+        const profile = JSON.parse(savedProfileStr);
+        const ci = JSON.parse(savedCheckInStr);
+        setIsGenerating(true);
+        (async () => {
+          const goal = determineGoal(ci.mood, profile, ci.sleepQuality);
+          const enhancedProfile = { ...profile, ...ci };
+          const recipe = recipeGenerator.generateRecipe(enhancedProfile, ci.mood, goal as any, ci.sleepQuality);
+          const loc = await locationService.getCurrentLocation().catch(() => null);
+          const userLoc = loc ? { lat: loc.latitude, lng: loc.longitude } : undefined;
+          const shopMatches = recipe.singleMixRecipe
+            ? shopMatcher.findMatchesForSingleMix(recipe.singleMixRecipe, userLoc)
+            : shopMatcher.findMatches(recipe.recipe, userLoc);
+          const finalRecipe = { ...recipe, shopMatches } as any;
+          setGeneratedRecipe(finalRecipe);
+          setIsGenerating(false);
+          setCurrentStep('recipe');
+          try { localStorage.setItem('generatedRecipeCache', JSON.stringify(finalRecipe)); } catch {}
+          try { localStorage.setItem('generate_currentStep', 'recipe'); } catch {}
+        })();
+      } else if (savedStep === 'recipe') {
+        // If step persisted as recipe but we have no data, keep user here; UI will show placeholder until regenerated
+        setCurrentStep('recipe');
+      }
+    } catch (error) {
+      console.error('init generate page failed', error);
+    }
+  }, []);
+
+
+  const handleCheckInComplete = (data: any) => {
+    setCheckInData(data);
+    try { localStorage.setItem('lastCheckIn', JSON.stringify(data)); } catch {}
+    // Immediately kick off generation and jump to recipe when done
+    setIsGenerating(true);
+    if (userProfile) {
+      setTimeout(async () => {
+        const goal = determineGoal(data.mood, userProfile, data.sleepQuality);
+        const enhancedProfile = { ...userProfile, ...data };
+        const recipe = recipeGenerator.generateRecipe(enhancedProfile, data.mood, goal as any, data.sleepQuality);
+        const loc = await locationService.getCurrentLocation().catch(() => null);
+        const userLoc = loc ? { lat: loc.latitude, lng: loc.longitude } : undefined;
+        const shopMatches = recipe.singleMixRecipe
+          ? shopMatcher.findMatchesForSingleMix(recipe.singleMixRecipe, userLoc)
+          : shopMatcher.findMatches(recipe.recipe, userLoc);
+        const finalRecipe = { ...recipe, shopMatches };
+        setGeneratedRecipe(finalRecipe);
+        if (finalRecipe.singleMixRecipe) {
+          trackRecipeGeneration(userProfile, data.mood, finalRecipe.singleMixRecipe).catch(() => {});
+        }
+        setIsGenerating(false);
+        setCurrentStep('recipe');
+        try { localStorage.setItem('generatedRecipeCache', JSON.stringify(finalRecipe)); } catch {}
+        try { localStorage.setItem('generate_currentStep', 'recipe'); } catch {}
+      }, 800);
+    } else {
+      // If no profile (edge case), just move to recipe step after check-in without generation
+      setIsGenerating(false);
+      setCurrentStep('recipe');
+      try { localStorage.setItem('generate_currentStep', 'recipe'); } catch {}
+    }
   };
 
-  const handleMoodSelect = (mood: Mood) => {
-    setSelectedMood(mood);
-    
+  const handleCheckInSkip = () => {
+    // Skip check-in triggers immediate generation with defaults
     if (userProfile) {
+      handleCheckInComplete({ mood: 'energized', sleepQuality: 3 });
+    } else {
+      setCurrentStep('recipe');
+    }
+  };
+
+  const handleAnalysisContinue = () => {
+    if (userProfile && checkInData) {
       setIsGenerating(true);
       
       // Simulate API call delay
-      setTimeout(() => {
-        const goal = mood.recommendedGoals[0] || 'energy-boost';
-        const recipe = recipeGenerator.generateRecipe(userProfile, mood, goal);
-        const shopMatches = shopMatcher.findMatches(recipe.recipe);
+      setTimeout(async () => {
+        // Determine goal based on mood, time of day, and user profile
+        const goal = determineGoal(checkInData.mood, userProfile, checkInData.sleepQuality);
+        
+        const enhancedProfile = { ...userProfile, ...checkInData };
+        const recipe = recipeGenerator.generateRecipe(enhancedProfile, checkInData.mood, goal as any, checkInData.sleepQuality);
+        // Try to get user location for distance-aware sorting
+        const loc = await locationService.getCurrentLocation().catch(() => null);
+        const userLoc = loc ? { lat: loc.latitude, lng: loc.longitude } : undefined;
+        // Prefer single-mix matching
+        const shopMatches = recipe.singleMixRecipe
+          ? shopMatcher.findMatchesForSingleMix(recipe.singleMixRecipe, userLoc)
+          : shopMatcher.findMatches(recipe.recipe, userLoc);
         
         const finalRecipe = {
           ...recipe,
@@ -50,14 +194,17 @@ export default function GeneratePage() {
         
         setGeneratedRecipe(finalRecipe);
         
-        // Track recipe generation
-        if (finalRecipe.singleMixRecipe) {
-          await trackRecipeGeneration(userProfile, mood, finalRecipe.singleMixRecipe);
-        }
+                // Track recipe generation
+                // Fire-and-forget analytics; don't block UI
+                if (finalRecipe.singleMixRecipe) {
+                  trackRecipeGeneration(userProfile, checkInData.mood, finalRecipe.singleMixRecipe).catch(() => {});
+                }
         
         setIsGenerating(false);
         setCurrentStep('recipe');
-      }, 2000);
+        try { localStorage.setItem('generatedRecipeCache', JSON.stringify(finalRecipe)); } catch {}
+        try { localStorage.setItem('generate_currentStep', 'recipe'); } catch {}
+      }, 800);
     }
   };
 
@@ -68,9 +215,7 @@ export default function GeneratePage() {
   };
 
   const resetFlow = () => {
-    setCurrentStep('onboarding');
     setUserProfile(null);
-    setSelectedMood(undefined);
     setGeneratedRecipe(null);
   };
 
@@ -79,94 +224,50 @@ export default function GeneratePage() {
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Progress Indicator */}
-        <div className="mb-8">
-          <div className="flex items-center justify-center space-x-4">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              currentStep === 'onboarding' ? 'bg-teal-600 text-white' : 
-              ['mood', 'recipe', 'shops'].includes(currentStep) ? 'bg-teal-100 text-teal-600' : 
-              'bg-gray-200 text-gray-500'
-            }`}>
-              1
-            </div>
-            <div className={`w-16 h-1 ${
-              ['mood', 'recipe', 'shops'].includes(currentStep) ? 'bg-teal-600' : 'bg-gray-200'
-            }`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              currentStep === 'mood' ? 'bg-teal-600 text-white' : 
-              ['recipe', 'shops'].includes(currentStep) ? 'bg-teal-100 text-teal-600' : 
-              'bg-gray-200 text-gray-500'
-            }`}>
-              2
-            </div>
-            <div className={`w-16 h-1 ${
-              ['recipe', 'shops'].includes(currentStep) ? 'bg-teal-600' : 'bg-gray-200'
-            }`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              currentStep === 'recipe' ? 'bg-teal-600 text-white' : 
-              currentStep === 'shops' ? 'bg-teal-100 text-teal-600' : 
-              'bg-gray-200 text-gray-500'
-            }`}>
-              3
-            </div>
-            <div className={`w-16 h-1 ${
-              currentStep === 'shops' ? 'bg-teal-600' : 'bg-gray-200'
-            }`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              currentStep === 'shops' ? 'bg-teal-600 text-white' : 'bg-gray-200 text-gray-500'
-            }`}>
-              4
-            </div>
-          </div>
-          <div className="flex justify-center mt-2">
-            <span className="text-sm text-gray-600">
-              {currentStep === 'onboarding' && 'Profile Setup'}
-              {currentStep === 'mood' && 'Mood Selection'}
-              {currentStep === 'recipe' && 'Recipe Generated'}
-              {currentStep === 'shops' && 'Shop Selection'}
-            </span>
-          </div>
-        </div>
+                {/* Compact Progress Indicator */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-center gap-3 text-xs text-gray-600">
+                    <div className={`px-2.5 py-1 rounded-full ${currentStep==='checkin' ? 'bg-violet-600 text-white' : 'bg-violet-50 text-violet-700'}`}>1. Check-in</div>
+                    <div className="h-0.5 w-8 bg-gray-200" />
+                    <div className={`px-2.5 py-1 rounded-full ${currentStep==='recipe' ? 'bg-violet-600 text-white' : 'bg-violet-50 text-violet-700'}`}>2. Smoothie</div>
+                    <div className="h-0.5 w-8 bg-gray-200" />
+                    <div className={`px-2.5 py-1 rounded-full ${currentStep==='shops' ? 'bg-violet-600 text-white' : 'bg-violet-50 text-violet-700'}`}>3. Nearby Match</div>
+                  </div>
+                </div>
 
         {/* Content */}
-        {currentStep === 'onboarding' && (
-          <OnboardingForm onComplete={handleOnboardingComplete} />
+        {currentStep === 'checkin' && (
+          <div className="max-w-4xl mx-auto">
+            <DailyCheckIn 
+              onComplete={handleCheckInComplete}
+              onSkip={handleCheckInSkip}
+            />
+          </div>
         )}
 
-        {currentStep === 'mood' && (
-          <div className="max-w-4xl mx-auto">
-            <MoodSelector 
-              onMoodSelect={handleMoodSelect}
-              selectedMood={selectedMood}
-            />
-            
-            {isGenerating && (
-              <div className="mt-8 text-center">
-                <div className="inline-flex items-center space-x-3 bg-white rounded-lg px-6 py-4 shadow-sm border border-gray-100">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-teal-600"></div>
-                  <span className="text-gray-700 font-medium">Generating your personalized recipe...</span>
-                </div>
+        {isGenerating && (
+          <div className="max-w-4xl mx-auto mb-6">
+            <div className="text-center">
+              <div className="inline-flex items-center space-x-3 bg-white rounded-lg px-6 py-4 shadow-sm border border-gray-100">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-violet-600"></div>
+                <span className="text-gray-700 font-medium">Generating your personalized recipe...</span>
               </div>
-            )}
+            </div>
           </div>
         )}
 
         {currentStep === 'recipe' && generatedRecipe && (
           <div className="max-w-4xl mx-auto">
             {generatedRecipe.singleMixRecipe ? (
-              <SingleMixRecipeDisplay recipe={generatedRecipe.singleMixRecipe} />
+              <SingleMixRecipeDisplay 
+                recipe={generatedRecipe.singleMixRecipe}
+                userProfile={userProfile}
+                checkInData={checkInData}
+                onFindShops={() => { setCurrentStep('shops'); try { localStorage.setItem('generate_currentStep', 'shops'); } catch {} }}
+              />
             ) : (
               <div className="text-center text-gray-600">Recipe not available</div>
             )}
-            
-            <div className="mt-8 text-center">
-              <button
-                onClick={() => setCurrentStep('shops')}
-                className="btn-primary text-lg px-8 py-4"
-              >
-                Find Nearby Shops
-              </button>
-            </div>
           </div>
         )}
 
@@ -179,17 +280,6 @@ export default function GeneratePage() {
           </div>
         )}
 
-        {/* Reset Button */}
-        {currentStep !== 'onboarding' && (
-          <div className="mt-12 text-center">
-            <button
-              onClick={resetFlow}
-              className="text-gray-500 hover:text-gray-700 text-sm underline"
-            >
-              Start Over
-            </button>
-          </div>
-        )}
       </main>
 
       <Footer />
