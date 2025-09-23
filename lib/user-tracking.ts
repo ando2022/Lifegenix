@@ -1,6 +1,10 @@
 import { createClient } from '@/lib/supabase/client';
 import { UserProfile } from '@/lib/types';
 
+// Allow disabling analytics completely in local/dev via env flag
+const ANALYTICS_DISABLED =
+  typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DISABLE_ANALYTICS === '1';
+
 export interface UserSession {
   id: string;
   userId?: string;
@@ -62,6 +66,7 @@ export class UserTracker {
   }
 
   private async initializeSession() {
+    if (ANALYTICS_DISABLED) { return; }
     // Get current user if logged in
     const { data: { user } } = await this.supabase.auth.getUser();
     this.userId = user?.id;
@@ -116,6 +121,7 @@ export class UserTracker {
   }
 
   async trackUserRegistration(user: any, profile: UserProfile) {
+    if (ANALYTICS_DISABLED) { return; }
     this.userId = user.id;
     
     // Update session with user ID
@@ -140,6 +146,7 @@ export class UserTracker {
   }
 
   async trackPageView(page: string, additionalProps?: Record<string, any>) {
+    if (ANALYTICS_DISABLED) { return; }
     if (this.session) {
       this.session.pageViews++;
       this.session.lastActivity = new Date();
@@ -153,6 +160,7 @@ export class UserTracker {
   }
 
   async trackRecipeGeneration(profile: UserProfile, mood: any, recipe: any) {
+    if (ANALYTICS_DISABLED) { return; }
     await this.trackEvent('recipe_generation', 'recipe_generated', {
       userId: this.userId,
       goal: recipe.goal,
@@ -170,6 +178,7 @@ export class UserTracker {
   }
 
   async trackShopInteraction(action: string, shopId: string, additionalProps?: Record<string, any>) {
+    if (ANALYTICS_DISABLED) { return; }
     await this.trackEvent('shop_interaction', action, {
       shopId,
       userId: this.userId,
@@ -178,6 +187,7 @@ export class UserTracker {
   }
 
   async trackConversion(conversionType: string, value?: number, additionalProps?: Record<string, any>) {
+    if (ANALYTICS_DISABLED) { return; }
     await this.trackEvent('conversion', conversionType, {
       userId: this.userId,
       value,
@@ -188,6 +198,7 @@ export class UserTracker {
   }
 
   async trackError(error: Error, context?: string) {
+    if (ANALYTICS_DISABLED) { return; }
     await this.trackEvent('error', 'error_occurred', {
       userId: this.userId,
       errorMessage: error.message,
@@ -199,6 +210,7 @@ export class UserTracker {
   }
 
   private async trackEvent(eventType: EventType, eventName: string, properties: Record<string, any>) {
+    if (ANALYTICS_DISABLED) { return; }
     const event: UserEvent = {
       id: `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       sessionId: this.sessionId,
@@ -236,6 +248,7 @@ export class UserTracker {
   }
 
   private async storeUserProfile(userId: string, profile: UserProfile) {
+    if (ANALYTICS_DISABLED) { return; }
     try {
       // Store in profiles table
       await this.supabase.from('profiles').upsert({
@@ -322,7 +335,7 @@ export class UserTracker {
   }
 
   private analyzeUserEvents(events: any[]) {
-    const analysis = {
+    return {
       totalEvents: events.length,
       pageViews: events.filter(e => e.event_type === 'page_view').length,
       recipesGenerated: events.filter(e => e.event_name === 'recipe_generated').length,
@@ -333,8 +346,6 @@ export class UserTracker {
       favoriteGoals: this.getMostFrequent(events.filter(e => e.event_name === 'recipe_generated').map(e => e.properties?.goal)),
       sessionDuration: this.calculateAverageSessionDuration(events)
     };
-
-    return analysis;
   }
 
   private getMostFrequent(items: string[]): Array<{item: string, count: number}> {

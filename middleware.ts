@@ -2,6 +2,11 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
+  // If auth is disabled via env, bypass all checks
+  if (process.env.NEXT_PUBLIC_DISABLE_AUTH === '1') {
+    return NextResponse.next();
+  }
+
   let response = NextResponse.next({
     request: {
       headers: request.headers,

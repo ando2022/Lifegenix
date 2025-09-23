@@ -76,10 +76,13 @@ export default function GeneratePage() {
   // Load state from localStorage on mount and auto-resume recipe step
   useEffect(() => {
     try {
+      const lockCheckin = process.env.NEXT_PUBLIC_LOCK_CHECKIN === '1';
       const savedProfileStr = localStorage.getItem('userProfile');
       const savedCheckInStr = localStorage.getItem('lastCheckIn');
       const cachedRecipeStr = localStorage.getItem('generatedRecipeCache');
       const savedStep = localStorage.getItem('generate_currentStep');
+      const url = new URL(window.location.href);
+      const force = url.searchParams.get('force');
 
       if (savedProfileStr) {
         const profile = JSON.parse(savedProfileStr);
@@ -89,11 +92,21 @@ export default function GeneratePage() {
         const ci = JSON.parse(savedCheckInStr);
         setCheckInData(ci);
       }
+      if (lockCheckin || force === 'checkin') {
+        setCurrentStep('checkin');
+        return;
+      }
+
       if (cachedRecipeStr) {
         const cached = JSON.parse(cachedRecipeStr);
         setGeneratedRecipe(cached);
         setCurrentStep('recipe');
         return; // hydrate directly
+      }
+      // If caller explicitly forced check-in, respect it and stop here
+      if (savedStep === 'checkin') {
+        setCurrentStep('checkin');
+        return;
       }
       // If we have profile + last check-in but no cache, auto-generate and go to recipe
       if (savedProfileStr && savedCheckInStr) {
@@ -131,32 +144,41 @@ export default function GeneratePage() {
     try { localStorage.setItem('lastCheckIn', JSON.stringify(data)); } catch {}
     // Immediately kick off generation and jump to recipe when done
     setIsGenerating(true);
-    if (userProfile) {
-      setTimeout(async () => {
-        const goal = determineGoal(data.mood, userProfile, data.sleepQuality);
-        const enhancedProfile = { ...userProfile, ...data };
-        const recipe = recipeGenerator.generateRecipe(enhancedProfile, data.mood, goal as any, data.sleepQuality);
-        const loc = await locationService.getCurrentLocation().catch(() => null);
-        const userLoc = loc ? { lat: loc.latitude, lng: loc.longitude } : undefined;
-        const shopMatches = recipe.singleMixRecipe
-          ? shopMatcher.findMatchesForSingleMix(recipe.singleMixRecipe, userLoc)
-          : shopMatcher.findMatches(recipe.recipe, userLoc);
-        const finalRecipe = { ...recipe, shopMatches };
-        setGeneratedRecipe(finalRecipe);
-        if (finalRecipe.singleMixRecipe) {
-          trackRecipeGeneration(userProfile, data.mood, finalRecipe.singleMixRecipe).catch(() => {});
-        }
-        setIsGenerating(false);
-        setCurrentStep('recipe');
-        try { localStorage.setItem('generatedRecipeCache', JSON.stringify(finalRecipe)); } catch {}
-        try { localStorage.setItem('generate_currentStep', 'recipe'); } catch {}
-      }, 800);
-    } else {
-      // If no profile (edge case), just move to recipe step after check-in without generation
+    const effectiveProfile = userProfile || {
+      gender: 'unspecified',
+      age: undefined,
+      location: undefined,
+      allergies: [],
+      intolerances: [],
+      diet: 'none',
+      goals: [],
+      dislikes: [],
+      sweetnessTolerance: 'medium',
+      texturePreference: 'balanced',
+      budget: 'medium',
+      activityLevel: 'moderate',
+      flavorPreferences: []
+    } as any;
+
+    setTimeout(async () => {
+      const goal = determineGoal(data.mood, effectiveProfile, data.sleepQuality);
+      const enhancedProfile = { ...effectiveProfile, ...data };
+      const recipe = recipeGenerator.generateRecipe(enhancedProfile, data.mood, goal as any, data.sleepQuality);
+      const loc = await locationService.getCurrentLocation().catch(() => null);
+      const userLoc = loc ? { lat: loc.latitude, lng: loc.longitude } : undefined;
+      const shopMatches = recipe.singleMixRecipe
+        ? shopMatcher.findMatchesForSingleMix(recipe.singleMixRecipe, userLoc)
+        : shopMatcher.findMatches(recipe.recipe, userLoc);
+      const finalRecipe = { ...recipe, shopMatches } as any;
+      setGeneratedRecipe(finalRecipe);
+      if (finalRecipe.singleMixRecipe && userProfile) {
+        trackRecipeGeneration(effectiveProfile, data.mood, finalRecipe.singleMixRecipe).catch(() => {});
+      }
       setIsGenerating(false);
       setCurrentStep('recipe');
+      try { localStorage.setItem('generatedRecipeCache', JSON.stringify(finalRecipe)); } catch {}
       try { localStorage.setItem('generate_currentStep', 'recipe'); } catch {}
-    }
+    }, 600);
   };
 
   const handleCheckInSkip = () => {
@@ -268,6 +290,18 @@ export default function GeneratePage() {
             ) : (
               <div className="text-center text-gray-600">Recipe not available</div>
             )}
+          </div>
+        )}
+
+        {currentStep === 'recipe' && !generatedRecipe && (
+          <div className="max-w-3xl mx-auto text-center py-12">
+            <div className="mb-4 text-gray-700">No recipe yet. Let’s start with a quick check‑in.</div>
+            <button
+              className="px-4 py-2 rounded-md bg-violet-600 text-white"
+              onClick={() => { setCurrentStep('checkin'); try { localStorage.setItem('generate_currentStep','checkin'); } catch {} }}
+            >
+              Go to Check‑in
+            </button>
           </div>
         )}
 

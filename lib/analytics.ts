@@ -31,10 +31,7 @@ export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 // Initialize Google Analytics
 export const initGA = () => {
-  if (!GA_MEASUREMENT_ID) {
-    console.warn('Google Analytics Measurement ID not found');
-    return;
-  }
+  if (!GA_MEASUREMENT_ID) { return; }
 
   // Load gtag script
   const script = document.createElement('script');
