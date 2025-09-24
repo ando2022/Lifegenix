@@ -175,11 +175,7 @@ export default function AboutPage() {
                   with practical convenience.
                 </p>
                 
-                <p className="text-gray-600 mb-6">
-                  Today, Xova serves thousands of health-conscious individuals across 
-                  Switzerland, helping them achieve their wellness goals through personalized 
-                  nutrition that's both delicious and effective.
-                </p>
+                
               </div>
             </div>
           </div>
