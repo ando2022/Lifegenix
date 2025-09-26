@@ -1,37 +1,61 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseServerClient } from '@/lib/supabase-server';
 import { db, savedSmoothies, users } from '@/lib/db';
-import { eq, desc } from 'drizzle-orm';
+import { eq, desc, and } from 'drizzle-orm';
 
-// GET - Fetch user's saved smoothies
-export async function GET() {
+// GET - Fetch user's saved smoothies or a specific smoothie
+export async function GET(request: Request) {
   try {
     const supabase = createSupabaseServerClient();
     const { data: { user }, error } = await supabase.auth.getUser();
-    
+
     if (error || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    
+
     // Get user from database
     const dbUsers = await db
       .select()
       .from(users)
       .where(eq(users.email, user.email!))
       .limit(1);
-    
+
     if (dbUsers.length === 0) {
       return NextResponse.json({ smoothies: [] });
     }
-    
-    // Fetch user's smoothies
-    const smoothies = await db
-      .select()
-      .from(savedSmoothies)
-      .where(eq(savedSmoothies.userId, dbUsers[0].id))
-      .orderBy(desc(savedSmoothies.createdAt));
-    
-    return NextResponse.json({ smoothies });
+
+    // Check if requesting a specific smoothie
+    const url = new URL(request.url);
+    const smoothieId = url.searchParams.get('id');
+
+    if (smoothieId) {
+      // Fetch specific smoothie
+      const smoothie = await db
+        .select()
+        .from(savedSmoothies)
+        .where(
+          and(
+            eq(savedSmoothies.id, smoothieId),
+            eq(savedSmoothies.userId, dbUsers[0].id)
+          )
+        )
+        .limit(1);
+
+      if (smoothie.length === 0) {
+        return NextResponse.json({ error: 'Smoothie not found' }, { status: 404 });
+      }
+
+      return NextResponse.json({ smoothie: smoothie[0] });
+    } else {
+      // Fetch all user's smoothies
+      const smoothies = await db
+        .select()
+        .from(savedSmoothies)
+        .where(eq(savedSmoothies.userId, dbUsers[0].id))
+        .orderBy(desc(savedSmoothies.createdAt));
+
+      return NextResponse.json({ smoothies });
+    }
   } catch (error) {
     console.error('Error fetching smoothies:', error);
     return NextResponse.json(
