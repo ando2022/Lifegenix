@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
-import { eventParticipants } from '@/lib/db/schema/events';
-import { eq, and } from 'drizzle-orm';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 
 export async function GET(request: NextRequest) {
   try {
@@ -16,23 +14,29 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Check if participant exists
-    const participant = await db
-      .select()
-      .from(eventParticipants)
-      .where(
-        and(
-          eq(eventParticipants.email, email),
-          eq(eventParticipants.eventSlug, eventSlug)
-        )
-      )
-      .limit(1);
+    const supabase = createSupabaseServerClient();
 
-    if (participant.length > 0) {
+    // Check if participant exists
+    const { data: participant, error } = await supabase
+      .from('event_participants')
+      .select('id, completed_at')
+      .eq('email', email)
+      .eq('event_slug', eventSlug)
+      .single();
+
+    if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+      console.error('Error checking participant:', error);
+      return NextResponse.json(
+        { error: 'Failed to check participant' },
+        { status: 500 }
+      );
+    }
+
+    if (participant) {
       return NextResponse.json({
         exists: true,
-        completed: !!participant[0].completedAt,
-        id: participant[0].id,
+        completed: !!participant.completed_at,
+        id: participant.id,
       });
     }
 

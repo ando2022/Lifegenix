@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db, eventParticipants } from '@/lib/db';
-import { eq } from 'drizzle-orm';
+import { createSupabaseServerClient } from '@/lib/supabase-server';
 
 export async function POST(request: Request) {
   try {
@@ -14,21 +13,33 @@ export async function POST(request: Request) {
       );
     }
 
-    // Update participant with questionnaire responses and mark as completed
-    const [updated] = await db
-      .update(eventParticipants)
-      .set({
-        questionnaire,
-        completedAt: new Date(),
-        updatedAt: new Date(),
-      })
-      .where(eq(eventParticipants.id, participantId))
-      .returning();
+    const supabase = createSupabaseServerClient();
 
-    if (!updated) {
+    // Update participant with questionnaire responses and mark as completed
+    const { data: updated, error } = await supabase
+      .from('event_participants')
+      .update({
+        questionnaire,
+        completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', participantId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Questionnaire submission error:', error);
+
+      if (error.code === 'PGRST116') {
+        return NextResponse.json(
+          { error: 'Participant not found' },
+          { status: 404 }
+        );
+      }
+
       return NextResponse.json(
-        { error: 'Participant not found' },
-        { status: 404 }
+        { error: 'Failed to submit questionnaire' },
+        { status: 500 }
       );
     }
 
