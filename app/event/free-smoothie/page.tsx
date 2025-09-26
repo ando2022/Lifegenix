@@ -35,6 +35,7 @@ type QuestionnaireForm = z.infer<typeof questionnaireSchema>;
 export default function FreeSmoothieEvent() {
   const [step, setStep] = useState<'signup' | 'questionnaire' | 'complete'>('signup');
   const [loading, setLoading] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true); // Add auth checking state
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
   const [participantId, setParticipantId] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string>('');
@@ -49,51 +50,82 @@ export default function FreeSmoothieEvent() {
       // First check if there's a code parameter (OAuth callback not processed)
       const code = searchParams.get('code');
       if (code) {
+        console.log('OAuth code detected, redirecting to auth callback');
         // Redirect to auth callback to process the code
         router.replace(`/auth/callback?code=${code}&redirect=/event/free-smoothie&event=true`);
         return;
       }
-      
+
       const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user && searchParams.get('event') === 'true') {
-        // User just signed up/in via OAuth
+      console.log('User check:', {
+        user: !!user,
+        email: user?.email,
+        event: searchParams.get('event'),
+        currentStep: step
+      });
+
+      // Check for user regardless of event parameter
+      if (user) {
+        // User is logged in (from OAuth or regular login)
+        console.log('User logged in, checking participant status...');
         setUserEmail(user.email || '');
         setUserName(user.user_metadata?.full_name || user.email || '');
-        
+
         // Check if they've already completed the event
-        const response = await fetch(`/api/event/check-participant?email=${user.email}&eventSlug=free-smoothie`);
-        const data = await response.json();
-        
-        if (data.exists && data.completed) {
-          // Already completed, show voucher
-          setStep('complete');
-        } else if (data.exists && !data.completed) {
-          // Started but not completed
-          setParticipantId(data.id);
-          setStep('questionnaire');
-        } else {
-          // New participant, register them
-          const registerResponse = await fetch('/api/event/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              eventSlug: 'free-smoothie',
-              email: user.email,
-              fullName: user.user_metadata?.full_name || user.email,
-              userId: user.id,
-            })
-          });
-          
-          const result = await registerResponse.json();
-          if (registerResponse.ok) {
-            setParticipantId(result.id);
+        try {
+          const response = await fetch(`/api/event/check-participant?email=${user.email}&eventSlug=free-smoothie`);
+          const data = await response.json();
+          console.log('Participant check response:', data);
+
+          if (data.exists && data.completed) {
+            // Already completed, show voucher
+            console.log('User already completed, showing voucher');
+            setStep('complete');
+          } else if (data.exists && !data.completed) {
+            // Started but not completed
+            console.log('User started but not completed, going to questionnaire');
+            setParticipantId(data.id);
             setStep('questionnaire');
+          } else {
+            // New participant, register them
+            console.log('New participant, registering...');
+            const registerResponse = await fetch('/api/event/register', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                eventSlug: 'free-smoothie',
+                email: user.email,
+                fullName: user.user_metadata?.full_name || user.email,
+                userId: user.id,
+              })
+            });
+
+            const result = await registerResponse.json();
+            console.log('Registration result:', result);
+
+            if (registerResponse.ok) {
+              setParticipantId(result.id);
+              setStep('questionnaire');
+            } else {
+              console.error('Registration failed:', result);
+              // Still move to questionnaire but without participant ID
+              // It will be created when they submit the questionnaire
+              setStep('questionnaire');
+            }
           }
+        } catch (error) {
+          console.error('Error checking participant:', error);
+          // On error, still try to proceed to questionnaire
+          setStep('questionnaire');
         }
+      } else {
+        console.log('No user found, staying on signup step');
       }
+
+      // Done checking auth
+      setCheckingAuth(false);
     };
-    
+
     checkUser();
   }, [searchParams, router]);
 
@@ -168,10 +200,15 @@ export default function FreeSmoothieEvent() {
     
     try {
       // This will work for both new users and existing users
+      // Use the actual production URL for redirectTo
+      const redirectOrigin = window.location.hostname === 'localhost'
+        ? window.location.origin
+        : 'https://www.xova.ch';
+
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?redirect=/event/free-smoothie&event=true`,
+          redirectTo: `${redirectOrigin}/auth/callback?redirect=/event/free-smoothie&event=true`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -214,6 +251,20 @@ export default function FreeSmoothieEvent() {
       setLoading(false);
     }
   };
+
+  // Show loading state while checking authentication
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-teal-400 to-cyan-600 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md bg-white/95">
+          <CardContent className="p-8 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading event...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (step === 'complete') {
     return (
