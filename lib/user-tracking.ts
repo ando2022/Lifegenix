@@ -60,6 +60,11 @@ export class UserTracker {
   }
 
   private async initializeSession() {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     // Get current user if logged in
     const { data: { user } } = await this.supabase.auth.getUser();
     this.userId = user?.id;
@@ -71,7 +76,7 @@ export class UserTracker {
       sessionId: this.sessionId,
       deviceInfo: this.getDeviceInfo(),
       location: await this.getLocationInfo(),
-      referrer: document.referrer || undefined,
+      referrer: typeof document !== 'undefined' ? document.referrer : undefined,
       startTime: new Date(),
       lastActivity: new Date(),
       pageViews: 0,
@@ -81,17 +86,28 @@ export class UserTracker {
     // Track session start
     await this.trackEvent('user_action', 'session_start', {
       isReturningUser: !!this.userId,
-      userAgent: navigator.userAgent,
-      referrer: document.referrer
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
+      referrer: typeof document !== 'undefined' ? document.referrer : ''
     });
   }
 
   private getDeviceInfo() {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined') {
+      return {
+        userAgent: 'server-side',
+        platform: 'server',
+        language: 'en',
+        screenResolution: '0x0',
+        timezone: 'UTC'
+      };
+    }
+
     return {
       userAgent: navigator.userAgent,
       platform: navigator.platform,
       language: navigator.language,
-      screenResolution: `${screen.width}x${screen.height}`,
+      screenResolution: typeof screen !== 'undefined' ? `${screen.width}x${screen.height}` : '0x0',
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
     };
   }
@@ -205,7 +221,7 @@ export class UserTracker {
       eventName,
       properties,
       timestamp: new Date(),
-      page: window.location.pathname
+      page: typeof window !== 'undefined' ? window.location.pathname : '/'
     };
 
     // Add to session events
@@ -215,18 +231,39 @@ export class UserTracker {
 
     // Store in database
     try {
-      await this.supabase.from('user_events').insert({
-        id: event.id,
+      // Prepare the data to be inserted
+      const eventData = {
         session_id: event.sessionId,
-        user_id: event.userId,
+        user_id: event.userId || null, // Make sure null is sent if no userId
         event_type: event.eventType,
         event_name: event.eventName,
-        properties: event.properties,
-        timestamp: event.timestamp.toISOString(),
-        page: event.page
-      });
+        properties: event.properties || {}, // Ensure properties is an object
+        page: event.page || null
+        // Don't send id or timestamp - let the database generate them
+      };
+
+      // Log the exact data being sent (for debugging)
+      console.log('Sending event to user_events:', JSON.stringify(eventData));
+
+      const { data, error } = await this.supabase
+        .from('user_events')
+        .insert(eventData)
+        .select();
+
+      if (error) {
+        console.error('Failed to store event - Supabase error:', error);
+        console.error('Event data that failed:', eventData);
+        console.error('Properties size:', JSON.stringify(eventData.properties).length);
+
+        // Check if it's a size issue
+        if (JSON.stringify(eventData.properties).length > 1000) {
+          console.warn('Properties object might be too large');
+        }
+      } else {
+        console.log('Event stored successfully:', data);
+      }
     } catch (error) {
-      console.error('Failed to store event:', error);
+      console.error('Failed to store event - Exception:', error);
     }
 
     // Also send to external analytics if configured
