@@ -181,7 +181,7 @@ export default function SmoothieDetailPage() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              {ingredients.length > 0 ? ingredients.map((ingredient, index) => {
+              {ingredients.length > 0 ? ingredients.map((ingredient: any, index: number) => {
                 const ing = ingredient.ingredient || ingredient;
                 return (
                   <div key={index} className="flex justify-between items-start border-b pb-2 last:border-0">
@@ -211,7 +211,7 @@ export default function SmoothieDetailPage() {
           </CardHeader>
           <CardContent>
             <ol className="space-y-3">
-              {instructions.length > 0 ? instructions.map((instruction, index) => (
+              {instructions.length > 0 ? instructions.map((instruction: string, index: number) => (
                 <li key={index} className="flex">
                   <span className="font-bold text-teal-600 mr-3">{index + 1}.</span>
                   <span>{instruction}</span>
@@ -263,7 +263,7 @@ export default function SmoothieDetailPage() {
               <div className="mt-4 pt-4 border-t">
                 <p className="text-sm text-gray-500 mb-2">Key Vitamins & Minerals</p>
                 <div className="flex flex-wrap gap-2">
-                  {nutritionInfo.vitamins.map((vitamin, index) => (
+                  {nutritionInfo.vitamins.map((vitamin: string, index: number) => (
                     <Badge key={index} variant="outline">{vitamin}</Badge>
                   ))}
                 </div>
@@ -280,7 +280,7 @@ export default function SmoothieDetailPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2">
-                {benefits.map((benefit, index) => (
+                {benefits.map((benefit: string, index: number) => (
                   <li key={index} className="flex items-start">
                     <span className="text-teal-600 mr-2">✓</span>
                     <span>{benefit}</span>
@@ -299,7 +299,7 @@ export default function SmoothieDetailPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2">
-                {tips.map((tip, index) => (
+                {tips.map((tip: string, index: number) => (
                   <li key={index} className="flex items-start">
                     <span className="text-amber-500 mr-2">💡</span>
                     <span>{tip}</span>
