@@ -16,10 +16,10 @@ export async function GET(request: NextRequest) {
 
     const supabase = createSupabaseServerClient();
 
-    // Check if participant exists
+    // Check if participant exists for this specific event
     const { data: participant, error } = await supabase
       .from('event_participants')
-      .select('id, completed_at')
+      .select('id, completed_at, questionnaire')
       .eq('email', email)
       .eq('event_slug', eventSlug)
       .single();
@@ -36,6 +36,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         exists: true,
         completed: !!participant.completed_at,
+        hasQuestionnaire: !!participant.questionnaire,
         id: participant.id,
       });
     }

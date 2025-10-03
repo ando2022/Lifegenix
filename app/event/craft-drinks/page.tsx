@@ -34,10 +34,10 @@ const questionnaireSchema = z.object({
 type SignUpForm = z.infer<typeof signUpSchema>;
 type QuestionnaireForm = z.infer<typeof questionnaireSchema>;
 
-export default function FreeSmoothieEvent() {
+export default function CraftDrinksEvent() {
   const [step, setStep] = useState<'signup' | 'questionnaire' | 'complete'>('signup');
   const [loading, setLoading] = useState(false);
-  const [checkingAuth, setCheckingAuth] = useState(true); // Add auth checking state
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
   const [participantId, setParticipantId] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string>('');
@@ -113,18 +113,16 @@ export default function FreeSmoothieEvent() {
         placeholder: 'e.g., calories, macros, steps, workouts, sleep, nothing'
       }
     ],
-    closing: 'Thank you! Show this screen to get your free smoothie voucher 🎉'
+    closing: 'Thank you! Show this screen to get your free craft & drinks voucher 🎉'
   };
 
   // Check if coming back from OAuth
   useEffect(() => {
     const checkUser = async () => {
-      // First check if there's a code parameter (OAuth callback not processed)
       const code = searchParams.get('code');
       if (code) {
         console.log('OAuth code detected, redirecting to auth callback');
-        // Redirect to auth callback to process the code
-        router.replace(`/auth/callback?code=${code}&redirect=/event/free-smoothie&event=true`);
+        router.replace(`/auth/callback?code=${code}&redirect=/event/craft-drinks&event=true`);
         return;
       }
 
@@ -136,36 +134,30 @@ export default function FreeSmoothieEvent() {
         currentStep: step
       });
 
-      // Check for user regardless of event parameter
       if (user) {
-        // User is logged in (from OAuth or regular login)
         console.log('User logged in, checking participant status...');
         setUserEmail(user.email || '');
         setUserName(user.user_metadata?.full_name || user.email || '');
 
-        // Check if they've already completed the event
         try {
-          const response = await fetch(`/api/event/check-participant?email=${user.email}&eventSlug=free-smoothie`);
+          const response = await fetch(`/api/event/check-participant?email=${user.email}&eventSlug=craft-drinks`);
           const data = await response.json();
           console.log('Participant check response:', data);
 
           if (data.exists && data.completed) {
-            // Already completed, show voucher
             console.log('User already completed, showing voucher');
             setStep('complete');
           } else if (data.exists && !data.completed) {
-            // Started but not completed
             console.log('User started but not completed, going to questionnaire');
             setParticipantId(data.id);
             setStep('questionnaire');
           } else {
-            // New participant, register them
             console.log('New participant, registering...');
             const registerResponse = await fetch('/api/event/register', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                eventSlug: 'free-smoothie',
+                eventSlug: 'craft-drinks',
                 email: user.email,
                 fullName: user.user_metadata?.full_name || user.email,
                 userId: user.id,
@@ -180,21 +172,17 @@ export default function FreeSmoothieEvent() {
               setStep('questionnaire');
             } else {
               console.error('Registration failed:', result);
-              // Still move to questionnaire but without participant ID
-              // It will be created when they submit the questionnaire
               setStep('questionnaire');
             }
           }
         } catch (error) {
           console.error('Error checking participant:', error);
-          // On error, still try to proceed to questionnaire
           setStep('questionnaire');
         }
       } else {
         console.log('No user found, staying on signup step');
       }
 
-      // Done checking auth
       setCheckingAuth(false);
     };
 
@@ -226,7 +214,6 @@ export default function FreeSmoothieEvent() {
   const handleSignUp = async (data: SignUpForm) => {
     setLoading(true);
     try {
-      // Create user account with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
@@ -240,12 +227,11 @@ export default function FreeSmoothieEvent() {
 
       if (authError) throw authError;
 
-      // Store participant info
       const response = await fetch('/api/event/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          eventSlug: 'free-smoothie',
+          eventSlug: 'craft-drinks',
           email: data.email,
           fullName: data.fullName,
           phoneNumber: data.phoneNumber,
@@ -272,8 +258,6 @@ export default function FreeSmoothieEvent() {
     setLoadingProvider('google');
     
     try {
-      // This will work for both new users and existing users
-      // Use the actual production URL for redirectTo
       const redirectOrigin = window.location.hostname === 'localhost'
         ? window.location.origin
         : 'https://www.xova.ch';
@@ -281,7 +265,7 @@ export default function FreeSmoothieEvent() {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${redirectOrigin}/auth/callback?redirect=/event/free-smoothie&event=true`,
+          redirectTo: `${redirectOrigin}/auth/callback?redirect=/event/craft-drinks&event=true`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -293,7 +277,6 @@ export default function FreeSmoothieEvent() {
         alert('Error signing up with Google. Please try again.');
         setLoadingProvider(null);
       }
-      // OAuth will redirect, so no need to handle success here
     } catch (error) {
       console.error('OAuth error:', error);
       alert('Error signing up with Google. Please try again.');
@@ -317,7 +300,7 @@ export default function FreeSmoothieEvent() {
           console.log('User details:', { id: user.id, email: user.email, metadata: user.user_metadata });
           
           // First, check if participant already exists
-          const checkResponse = await fetch(`/api/event/check-participant?email=${user.email}&eventSlug=free-smoothie`);
+          const checkResponse = await fetch(`/api/event/check-participant?email=${user.email}&eventSlug=craft-drinks`);
           const checkResult = await checkResponse.json();
           console.log('Participant check result:', checkResult);
           
@@ -328,7 +311,7 @@ export default function FreeSmoothieEvent() {
           } else {
             // Create new participant
             const registerData = {
-              eventSlug: 'free-smoothie',
+              eventSlug: 'craft-drinks',
               email: user.email,
               fullName: user.user_metadata?.full_name || user.email,
               userId: user.id,
@@ -380,7 +363,6 @@ export default function FreeSmoothieEvent() {
     }
   };
 
-  // Show loading state while checking authentication
   if (checkingAuth) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-teal-400 to-cyan-600 flex items-center justify-center p-4">
@@ -405,11 +387,11 @@ export default function FreeSmoothieEvent() {
             <h1 className="text-3xl font-bold text-gray-800">You're All Set!</h1>
             <p className="text-lg text-gray-600">
               Show this screen to get your
-              <span className="block text-2xl font-bold text-green-600 mt-2">FREE SMOOTHIE!</span>
+              <span className="block text-2xl font-bold text-green-600 mt-2">FREE CRAFT & DRINKS!</span>
             </p>
             <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
               <Coffee className="w-12 h-12 text-green-600 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">Valid for one free smoothie</p>
+              <p className="text-sm text-gray-600">Valid for one free craft & drinks experience</p>
               <p className="text-xs text-gray-500 mt-2">User: {userName || userEmail}</p>
               <p className="text-xs text-gray-400">{userEmail}</p>
             </div>
@@ -429,7 +411,7 @@ export default function FreeSmoothieEvent() {
           <CardHeader>
             <CardTitle className="text-2xl">Almost There! 🎯</CardTitle>
             <CardDescription>
-              Help us create your perfect smoothie by answering a few quick questions
+              Help us create your perfect craft & drinks experience by answering a few quick questions
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -540,7 +522,7 @@ export default function FreeSmoothieEvent() {
                                   if (isSelected) {
                                     field.onChange(field.value.filter(v => v !== option));
                                   } else if (field.value.length < 3) {
-                                    field.onChange([...field.value, option as any]);
+                                    field.onChange([...field.value, option]);
                                   }
                                 }}
                                 disabled={!isSelected && field.value.length >= 3}
@@ -670,7 +652,7 @@ export default function FreeSmoothieEvent() {
                       Submitting...
                     </div>
                   ) : (
-                    'Get My Free Smoothie! 🎉'
+                    'Get My Free Craft & Drinks! 🎉'
                   )}
                 </button>
               </form>
@@ -688,9 +670,9 @@ export default function FreeSmoothieEvent() {
           <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center">
             <Coffee className="w-10 h-10 text-purple-600" />
           </div>
-          <CardTitle className="text-3xl font-bold">FREE Smoothie! 🎉</CardTitle>
+          <CardTitle className="text-3xl font-bold">FREE Craft & Drinks! 🎉</CardTitle>
           <CardDescription className="text-lg mt-2">
-            Sign up now and get your free healthy smoothie today!
+            Sign up now and get your free craft & drinks experience today!
           </CardDescription>
         </CardHeader>
         <CardContent>

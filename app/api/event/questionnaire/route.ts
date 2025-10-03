@@ -4,9 +4,11 @@ import { createSupabaseServerClient } from '@/lib/supabase-server';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    console.log('Questionnaire API received:', { body });
     const { participantId, questionnaire } = body;
 
     if (!participantId) {
+      console.error('Missing participantId:', { participantId, questionnaire });
       return NextResponse.json(
         { error: 'Participant ID is required' },
         { status: 400 }
