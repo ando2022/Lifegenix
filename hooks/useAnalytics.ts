@@ -2,9 +2,11 @@ import { useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { userTracker } from '@/lib/user-tracking';
 import * as analytics from '@/lib/analytics';
+import { createClient } from '@/lib/supabase/client';
 
 export const useAnalytics = () => {
   const router = useRouter();
+  const supabase = createClient();
 
   // Initialize analytics on mount
   useEffect(() => {
@@ -60,10 +62,43 @@ export const useAnalytics = () => {
     await userTracker.trackError(error, context);
   }, []);
 
-  const trackCustomEvent = useCallback(async (eventName: string, properties: Record<string, any>) => {
-    analytics.trackEvent(eventName, 'custom', eventName, undefined, properties);
-    // You can also track custom events in your user tracker if needed
-  }, []);
+  const trackCustomEvent = useCallback(async (eventName: string, properties?: Record<string, any>) => {
+    try {
+      // Track to Google Analytics
+      analytics.trackEvent(eventName, 'custom', eventName, undefined, properties);
+      
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Generate session ID if not exists
+      let sessionId = sessionStorage.getItem('xova_session_id');
+      if (!sessionId) {
+        sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        sessionStorage.setItem('xova_session_id', sessionId);
+      }
+
+      // Insert event into Supabase
+      const { error } = await supabase
+        .from('user_events')
+        .insert({
+          session_id: sessionId,
+          user_id: user?.id || null,
+          event_type: 'user_action',
+          event_name: eventName,
+          properties: properties || {},
+          page: window.location.pathname,
+          timestamp: new Date().toISOString()
+        });
+
+      if (error) {
+        console.error('Failed to track event:', error);
+      } else {
+        console.log('Event tracked:', eventName, properties);
+      }
+    } catch (error) {
+      console.error('Error tracking custom event:', error);
+    }
+  }, [supabase]);
 
   const setUserProperties = useCallback((properties: Record<string, any>) => {
     analytics.setUserProperties(properties);

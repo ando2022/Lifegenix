@@ -2,174 +2,299 @@
 
 import { useState } from 'react';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { userTracker } from '@/lib/user-tracking';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Header from '@/components/Header';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 
 export default function TestAnalyticsPage() {
-  const [events, setEvents] = useState<string[]>([]);
-  const { trackCustomEvent, trackConversion, trackError } = useAnalytics();
+  const { trackCustomEvent } = useAnalytics();
+  const [testResults, setTestResults] = useState<string[]>([]);
+  const [customEventName, setCustomEventName] = useState('');
+  const [customProperties, setCustomProperties] = useState('');
 
-  const addEvent = (eventDescription: string) => {
-    setEvents(prev => [...prev, `${new Date().toLocaleTimeString()}: ${eventDescription}`]);
+  const addResult = (message: string, type: 'success' | 'error' | 'info' = 'info') => {
+    const timestamp = new Date().toLocaleTimeString();
+    const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+    setTestResults(prev => [`${icon} [${timestamp}] ${message}`, ...prev.slice(0, 9)]);
   };
 
-  const testPageView = async () => {
-    await userTracker.trackPageView('/test-analytics', { test: true });
-    addEvent('Page view tracked');
+  const testEvent = async (eventName: string, properties?: Record<string, any>) => {
+    try {
+      addResult(`Testing event: ${eventName}`, 'info');
+      await trackCustomEvent(eventName, properties);
+      addResult(`✅ Event "${eventName}" tracked successfully!`, 'success');
+    } catch (error) {
+      addResult(`❌ Failed to track "${eventName}": ${error}`, 'error');
+    }
   };
 
   const testCustomEvent = async () => {
-    await trackCustomEvent('test_button_click', {
-      button_name: 'Test Custom Event',
-      page: '/test-analytics',
-      timestamp: new Date().toISOString()
-    });
-    addEvent('Custom event tracked');
-  };
+    if (!customEventName.trim()) {
+      addResult('Please enter an event name', 'error');
+      return;
+    }
 
-  const testRecipeGeneration = async () => {
-    const mockRecipe = {
-      id: 'test-recipe-123',
-      name: 'Test Energy Smoothie',
-      goal: 'energy-boost',
-      cost: 12.50
-    };
-    
-    const mockProfile: any = {
-      id: 'test-user',
-      allergies: ['nuts'],
-      diet: 'vegan'
-    };
+    let properties = {};
+    if (customProperties.trim()) {
+      try {
+        properties = JSON.parse(customProperties);
+      } catch (error) {
+        addResult('Invalid JSON in properties field', 'error');
+        return;
+      }
+    }
 
-    const mockMood: any = {
-      id: 'energetic',
-      name: 'Energetic'
-    };
-
-    await userTracker.trackRecipeGeneration(mockProfile, mockMood, mockRecipe);
-    addEvent('Recipe generation tracked');
-  };
-
-  const testShopInteraction = async () => {
-    await userTracker.trackShopInteraction('shop_viewed', 'test-shop-123', {
-      shopName: 'Test Juice Bar',
-      city: 'Zürich'
-    });
-    addEvent('Shop interaction tracked');
-  };
-
-  const testConversion = async () => {
-    await trackConversion('recipe_generated', 12.50, {
-      recipe_id: 'test-recipe-123',
-      goal: 'energy-boost'
-    });
-    addEvent('Conversion tracked');
-  };
-
-  const testError = async () => {
-    const testError = new Error('This is a test error for analytics');
-    await trackError(testError, 'analytics_test');
-    addEvent('Error tracked');
-  };
-
-  const getSessionData = async () => {
-    const sessionData = await userTracker.getSessionData();
-    console.log('Current session data:', sessionData);
-    addEvent('Session data logged to console');
-  };
-
-  const clearEvents = () => {
-    setEvents([]);
+    await testEvent(customEventName, properties);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <Card>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Analytics Test Page</h1>
+          <p className="text-gray-600">
+            Test your analytics tracking and verify events are being saved to Supabase.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Quick Tests */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Tests</CardTitle>
+              <CardDescription>Test common analytics events</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button 
+                onClick={() => testEvent('profile_started', { 
+                  source: 'test', 
+                  device: 'desktop',
+                  timestamp: new Date().toISOString()
+                })}
+                className="w-full"
+                variant="outline"
+              >
+                Test Profile Started
+              </Button>
+              
+              <Button 
+                onClick={() => testEvent('profile_submitted', { 
+                  time_spent_seconds: 120,
+                  allergies_count: 2,
+                  goals: ['energy-boost', 'longevity'],
+                  diet: 'vegan',
+                  age_range: '26-35'
+                })}
+                className="w-full"
+                variant="outline"
+              >
+                Test Profile Submitted
+              </Button>
+              
+              <Button 
+                onClick={() => testEvent('menu_viewed', { 
+                  moods_displayed: 8,
+                  mood_names: ['Energized', 'Relaxed', 'Focused'],
+                  timestamp: new Date().toISOString()
+                })}
+                className="w-full"
+                variant="outline"
+              >
+                Test Menu Viewed
+              </Button>
+              
+              <Button 
+                onClick={() => testEvent('smoothie_selected', { 
+                  mood: 'Energized',
+                  mood_id: 'energized',
+                  recipe_name: 'Green Energy Smoothie',
+                  recipe_cost: 8.50,
+                  ingredients_count: 6,
+                  goals: ['energy-boost'],
+                  generation_time_ms: 1500
+                })}
+                className="w-full"
+                variant="outline"
+              >
+                Test Smoothie Selected
+              </Button>
+              
+              <Button 
+                onClick={() => testEvent('checkout_started', { 
+                  shops_available: 3,
+                  top_match_score: 0.95,
+                  recipe_id: 'recipe_123',
+                  recipe_cost: 8.50,
+                  timestamp: new Date().toISOString()
+                })}
+                className="w-full"
+                variant="outline"
+              >
+                Test Checkout Started
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Custom Event */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Custom Event Test</CardTitle>
+              <CardDescription>Test any custom event</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="eventName">Event Name</Label>
+                <Input
+                  id="eventName"
+                  value={customEventName}
+                  onChange={(e) => setCustomEventName(e.target.value)}
+                  placeholder="e.g., button_clicked"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="properties">Properties (JSON)</Label>
+                <Textarea
+                  id="properties"
+                  value={customProperties}
+                  onChange={(e) => setCustomProperties(e.target.value)}
+                  placeholder='{"key": "value", "count": 1}'
+                  rows={4}
+                />
+              </div>
+              
+              <Button 
+                onClick={testCustomEvent}
+                className="w-full"
+                disabled={!customEventName.trim()}
+              >
+                Test Custom Event
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Results */}
+        <Card className="mt-6">
           <CardHeader>
-            <CardTitle>🔬 Analytics Testing Dashboard</CardTitle>
-            <p className="text-gray-600">
-              Use this page to test your analytics implementation. 
-              Check your browser console and Supabase database to see the tracked events.
-            </p>
+            <CardTitle>Test Results</CardTitle>
+            <CardDescription>
+              Check these results and then verify in your Supabase dashboard
+            </CardDescription>
           </CardHeader>
-          
-          <CardContent className="space-y-6">
-            {/* Test Buttons */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <Button onClick={testPageView} variant="outline">
-                Track Page View
-              </Button>
-              
-              <Button onClick={testCustomEvent} variant="outline">
-                Track Custom Event
-              </Button>
-              
-              <Button onClick={testRecipeGeneration} variant="outline">
-                Track Recipe Generation
-              </Button>
-              
-              <Button onClick={testShopInteraction} variant="outline">
-                Track Shop Interaction
-              </Button>
-              
-              <Button onClick={testConversion} variant="outline">
-                Track Conversion
-              </Button>
-              
-              <Button onClick={testError} variant="outline">
-                Track Error
-              </Button>
-              
-              <Button onClick={getSessionData} variant="outline">
-                Log Session Data
-              </Button>
-              
-              <Button onClick={clearEvents} variant="destructive">
-                Clear Events
-              </Button>
-            </div>
-
-            {/* Event Log */}
-            <div>
-              <h3 className="text-lg font-semibold mb-3">Event Log</h3>
-              <div className="bg-gray-100 rounded-lg p-4 max-h-64 overflow-y-auto">
-                {events.length === 0 ? (
-                  <p className="text-gray-500 italic">No events tracked yet. Click the buttons above to test.</p>
-                ) : (
-                  <div className="space-y-1">
-                    {events.map((event, index) => (
-                      <div key={index} className="text-sm font-mono">
-                        {event}
-                      </div>
-                    ))}
+          <CardContent>
+            {testResults.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                No tests run yet. Click a test button above to start.
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {testResults.map((result, index) => (
+                  <div key={index} className="text-sm font-mono bg-gray-100 p-2 rounded">
+                    {result}
                   </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Instructions */}
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>How to Verify</CardTitle>
+            <CardDescription>Check if your events are being saved</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold">1. Run Tests Above</h4>
+                  <p className="text-sm text-gray-600">
+                    Click the test buttons to generate sample events
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold">2. Check Supabase Dashboard</h4>
+                  <p className="text-sm text-gray-600">
+                    Go to your Supabase project → Table Editor → user_events table
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold">3. Run This Query</h4>
+                  <p className="text-sm text-gray-600">
+                    In Supabase SQL Editor, run:
+                  </p>
+                  <code className="block mt-2 p-2 bg-gray-100 rounded text-xs">
+                    SELECT * FROM user_events ORDER BY timestamp DESC LIMIT 10;
+                  </code>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                <div>
+                  <h4 className="font-semibold">4. Check Analytics Dashboard</h4>
+                  <p className="text-sm text-gray-600">
+                    Visit <code>/admin/analytics</code> to see your data visualized
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Environment Check */}
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>Environment Check</CardTitle>
+            <CardDescription>Verify your configuration</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                {process.env.NEXT_PUBLIC_SUPABASE_URL ? (
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                ) : (
+                  <XCircle className="w-4 h-4 text-red-600" />
                 )}
+                <span className="text-sm">
+                  NEXT_PUBLIC_SUPABASE_URL: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Missing'}
+                </span>
               </div>
-            </div>
-
-            {/* Instructions */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-blue-900 mb-2">How to Verify Tracking</h3>
-              <div className="text-blue-800 space-y-2">
-                <p><strong>1. Browser Console:</strong> Open Developer Tools (F12) → Console tab to see debug logs</p>
-                <p><strong>2. Supabase Database:</strong> Check the <code>user_events</code> table for tracked events</p>
-                <p><strong>3. Google Analytics:</strong> Go to Realtime reports to see live activity</p>
-                <p><strong>4. Network Tab:</strong> Watch for requests to Google Analytics and Supabase</p>
+              
+              <div className="flex items-center gap-2">
+                {process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? (
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                ) : (
+                  <XCircle className="w-4 h-4 text-red-600" />
+                )}
+                <span className="text-sm">
+                  NEXT_PUBLIC_SUPABASE_ANON_KEY: {process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Missing'}
+                </span>
               </div>
-            </div>
-
-            {/* Environment Check */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <h3 className="text-lg font-semibold text-yellow-900 mb-2">Environment Check</h3>
-              <div className="text-yellow-800 space-y-1">
-                <p><strong>GA Measurement ID:</strong> {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? '✅ Configured' : '❌ Missing'}</p>
-                <p><strong>Supabase URL:</strong> {process.env.NEXT_PUBLIC_SUPABASE_URL ? '✅ Configured' : '❌ Missing'}</p>
-                <p><strong>Supabase Key:</strong> {process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? '✅ Configured' : '❌ Missing'}</p>
+              
+              <div className="flex items-center gap-2">
+                {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                ) : (
+                  <XCircle className="w-4 h-4 text-yellow-600" />
+                )}
+                <span className="text-sm">
+                  NEXT_PUBLIC_GA_MEASUREMENT_ID: {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'Not set (optional)'}
+                </span>
               </div>
             </div>
           </CardContent>
