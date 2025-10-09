@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Mood } from '@/lib/types';
 import { moods } from '@/data/moods';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 interface MoodSelectorProps {
   onMoodSelect: (mood: Mood) => void;
@@ -10,6 +11,21 @@ interface MoodSelectorProps {
 }
 
 export default function MoodSelector({ onMoodSelect, selectedMood }: MoodSelectorProps) {
+  const { trackCustomEvent } = useAnalytics();
+  const [hasTrackedView, setHasTrackedView] = useState(false);
+
+  // Track when mood menu is displayed
+  useEffect(() => {
+    if (!hasTrackedView) {
+      trackCustomEvent('menu_viewed', {
+        moods_displayed: moods.length,
+        mood_names: moods.map(m => m.name),
+        timestamp: new Date().toISOString()
+      });
+      setHasTrackedView(true);
+    }
+  }, [hasTrackedView, trackCustomEvent]);
+
   return (
     <div className="space-y-6">
       <div className="text-center">

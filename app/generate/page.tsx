@@ -30,7 +30,7 @@ export default function GeneratePage() {
 
   const recipeGenerator = new SingleMixRecipeGenerator();
   const shopMatcher = new ShopMatcher();
-  const { trackRecipeGeneration, trackShopInteraction } = useAnalytics();
+  const { trackRecipeGeneration, trackShopInteraction, trackCustomEvent } = useAnalytics();
   
   // Track user engagement on this page
   useEngagementTracking();
@@ -70,6 +70,7 @@ export default function GeneratePage() {
     
     if (userProfile) {
       setIsGenerating(true);
+      const generationStartTime = Date.now();
       
       // Simulate API call delay
       setTimeout(async () => {
@@ -84,8 +85,19 @@ export default function GeneratePage() {
         
         setGeneratedRecipe(finalRecipe);
         
-        // Track recipe generation
+        // Track smoothie selected (recipe generated)
         if (finalRecipe.singleMixRecipe) {
+          trackCustomEvent('smoothie_selected', {
+            mood: mood.name,
+            mood_id: mood.id,
+            recipe_name: finalRecipe.singleMixRecipe.name,
+            recipe_cost: finalRecipe.price,
+            ingredients_count: finalRecipe.singleMixRecipe.ingredients.length,
+            goals: userProfile.goals,
+            generation_time_ms: Date.now() - generationStartTime
+          });
+          
+          // Also track with existing recipe generation tracker
           await trackRecipeGeneration(userProfile, mood, finalRecipe.singleMixRecipe);
         }
         
@@ -255,7 +267,17 @@ export default function GeneratePage() {
             
             <div className="mt-8 text-center">
               <button
-                onClick={() => setCurrentStep('shops')}
+                onClick={() => {
+                  // Track checkout started (viewing shops)
+                  trackCustomEvent('checkout_started', {
+                    shops_available: generatedRecipe.shopMatches.length,
+                    top_match_score: generatedRecipe.shopMatches[0]?.matchScore,
+                    recipe_id: generatedRecipe.singleMixRecipe?.id,
+                    recipe_cost: generatedRecipe.price,
+                    timestamp: new Date().toISOString()
+                  });
+                  setCurrentStep('shops');
+                }}
                 className="btn-primary text-lg px-8 py-4"
               >
                 Find Nearby Shops

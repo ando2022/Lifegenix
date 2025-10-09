@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UserProfile, HealthGoal } from '@/lib/types';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 interface OnboardingFormProps {
   onComplete: (profile: UserProfile) => void;
@@ -18,8 +19,23 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
     sweetnessTolerance: 'medium',
     texturePreference: 'layered'
   });
-
+  const [formStartTime] = useState(Date.now());
+  const [hasTrackedStart, setHasTrackedStart] = useState(false);
+  
+  const { trackCustomEvent } = useAnalytics();
   const totalSteps = 4;
+
+  // Track when user starts the profile form
+  useEffect(() => {
+    if (!hasTrackedStart) {
+      trackCustomEvent('profile_started', {
+        source: typeof window !== 'undefined' ? (sessionStorage.getItem('source') || 'direct') : 'direct',
+        timestamp: new Date().toISOString(),
+        device: typeof navigator !== 'undefined' ? (/Mobile/.test(navigator.userAgent) ? 'mobile' : 'desktop') : 'unknown'
+      });
+      setHasTrackedStart(true);
+    }
+  }, [hasTrackedStart, trackCustomEvent]);
 
   const handleNext = () => {
     if (currentStep < totalSteps) {
@@ -38,6 +54,16 @@ export default function OnboardingForm({ onComplete }: OnboardingFormProps) {
         createdAt: new Date(),
         updatedAt: new Date()
       } as UserProfile;
+      
+      // Track profile submission
+      trackCustomEvent('profile_submitted', {
+        time_spent_seconds: Math.round((Date.now() - formStartTime) / 1000),
+        allergies_count: profile.allergies.length,
+        goals: profile.goals,
+        diet: profile.diet,
+        age_range: profile.age ? (profile.age < 26 ? '18-25' : profile.age < 36 ? '26-35' : profile.age < 46 ? '36-45' : '46+') : 'not_provided',
+        fields_filled: Object.keys(profile).filter(key => profile[key as keyof UserProfile] !== undefined).length
+      });
       
       onComplete(profile);
     }
